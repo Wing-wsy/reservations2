@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class CodeGenerator {
     public static void main (String[] args) {
+        System.out.println("test");
         //用来获取Mybatis-Plus.properties文件的配置信息
         final ResourceBundle rb = ResourceBundle.getBundle("Mybatis-Plus");
         /**
