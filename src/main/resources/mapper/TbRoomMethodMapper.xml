@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbRoomMethodMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbRoomMethod">
+        <id column="ID" property="id" />
+        <result column="Modality" property="Modality" />
+        <result column="RoomName" property="RoomName" />
+        <result column="MethodName" property="MethodName" />
+        <result column="HospitalName" property="HospitalName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, Modality, RoomName, MethodName,HospitalName
+    </sql>
+
+    <!--查询列表-->
+    <select id="selectFinAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_room_method where 1=1
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+    <select id="selectFinAllNew" resultMap="BaseResultMap" parameterType="com.annet.vo.TbRoomMethodVo">
+        select
+        <include refid="Base_Column_List" />
+        from tb_room_method where 1=1
+        <if test="modality!=null and modality!=''">
+            and Modality = #{modality}
+        </if>
+        <if test="roomName!=null and roomName!=''">
+            and RoomName = #{roomName}
+        </if>
+        <if test="methodName!=null and methodName!=''">
+            and MethodName = #{methodName}
+        </if>
+        <if test="hospitalName!=null and hospitalName!=''">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--科室院区查询-->
+    <select id="selectFindAll" resultMap="BaseResultMap">
+        select distinct
+        a.ID, a.Modality, a.RoomName, a.MethodName,a.HospitalName
+        from tb_room_method a inner join tb_studyroom b on a.Modality=b.Modality where 1=1
+        <if test="deptName!=null">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="hospitalName!=null">
+            and b.HospitalName = #{hospitalName}
+        </if>
+    </select>
+    <select id="selectFindAllNew" resultMap="BaseResultMap" parameterType="com.annet.vo.TbRoomMethodVo">
+        select distinct
+        a.ID, a.Modality, a.RoomName, a.MethodName,a.HospitalName
+        from tb_room_method a inner join tb_studyroom b on a.Modality=b.Modality where 1=1
+        <if test="deptName!=null and deptName!=''">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="modality!=null and modality!=''">
+            and a.Modality = #{modality}
+        </if>
+        <if test="roomName!=null and roomName!=''">
+            and a.RoomName = #{roomName}
+        </if>
+        <if test="methodName!=null and methodName!=''">
+            and a.MethodName = #{methodName}
+        </if>
+        <if test="hospitalName!=null and hospitalName!=''">
+            and a.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--查询重复-->
+    <select id="selectCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_room_method where 1=1
+        <if test="Modality != null">
+            and Modality = #{Modality}
+        </if>
+        <if test="RoomName != null">
+            and RoomName = #{RoomName}
+        </if>
+        <if test="MethodName != null">
+            and MethodName = #{MethodName}
+        </if>
+        <if test="HospitalName != null">
+            and HospitalName = #{HospitalName}
+        </if>
+        <if test="id != null">
+            and ID != #{id}
+        </if>
+    </select>
+
+
+    <!--添加-->
+    <insert id="insertTbRoomMethod" parameterType="com.annet.entity.TbRoomMethod"
+        useGeneratedKeys="true" keyProperty="id">
+        insert into tb_room_method
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                Modality,
+            </if>
+            <if test="RoomName != null">
+                RoomName,
+            </if>
+            <if test="MethodName != null">
+                MethodName,
+            </if>
+            <if test="HospitalName!=null">
+                HospitalName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                #{Modality},
+            </if>
+            <if test="RoomName != null">
+                #{RoomName},
+            </if>
+            <if test="MethodName != null">
+                #{MethodName},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改-->
+    <update id="updateTbRoomMethod" parameterType="com.annet.entity.TbRoomMethod">
+        update tb_room_method set
+        <trim suffixOverrides=",">
+            <if test="Modality != null">
+                Modality = #{Modality},
+            </if>
+            <if test="RoomName != null">
+                RoomName = #{RoomName},
+            </if>
+            <if test="MethodName != null">
+                MethodName = #{MethodName},
+            </if>
+            <if test="HospitalName != null">
+                HospitalName = #{HospitalName},
+            </if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteTbRoomMethod">
+      delete from tb_room_method where ID = #{ID}
+    </delete>
+
+</mapper>

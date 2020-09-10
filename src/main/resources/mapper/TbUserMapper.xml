@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbUser">
+        <id column="UserID" property="UserID" />
+        <result column="UserName" property="UserName" />
+        <result column="Password" property="Password" />
+        <result column="DeptName" property="DeptName" />
+        <result column="RuleList" property="RuleList" />
+        <result column="Status" property="Status" />
+        <result column="AddDate" property="AddDate" />
+        <result column="UserCode" property="UserCode" />
+        <result column="HospitalName" property="HospitalName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        UserID, UserName, Password, DeptName, RuleList, Status, AddDate,HospitalName,UserCode
+    </sql>
+
+    <!--判断用户是否存在并-->
+    <select id="selectUserID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_user where UserID = #{UserID}
+    </select>
+
+    <!--用户登录-->
+    <select id="login" resultMap="BaseResultMap">
+        select
+        a.UserID, a.UserName, a.Password, a.DeptName, a.RuleList, a.Status, a.AddDate,a.HospitalName,b.DeptCode,a.UserCode
+        from tb_user a inner join tb_depttable b on a.DeptName=b.DeptName
+        where UserID = #{UserID} and Password = #{Password}
+    </select>
+
+    <!--用户列表-->
+    <select id="selectFinAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_user where 1=1
+        <if test="hospitalName != null">
+            and HospitalName = #{hospitalName}
+        </if>
+        ORDER BY AddDate
+    </select>
+
+    <!--通过ID查询-->
+    <select id="selectFinId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_user where UserID = #{id}
+    </select>
+
+    <!--用户添加-->
+    <insert id="insertTbUser" parameterType="com.annet.entity.TbUser">
+        insert into tb_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="UserID != null">
+                UserID,
+            </if>
+            <if test="UserName != null">
+                UserName,
+            </if>
+            <if test="Password != null">
+                Password,
+            </if>
+            <if test="DeptName != null">
+                DeptName,
+            </if>
+            <if test="RuleList != null">
+                RuleList,
+            </if>
+            <if test="Status != null">
+                Status,
+            </if>
+            <if test="AddDate != null">
+                AddDate,
+            </if>
+            <if test="UserCode != null">
+                UserCode,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="UserID != null">
+                #{UserID},
+            </if>
+            <if test="UserName != null">
+                #{UserName},
+            </if>
+            <if test="Password != null">
+                #{Password},
+            </if>
+            <if test="DeptName != null">
+                #{DeptName},
+            </if>
+            <if test="RuleList != null">
+                #{RuleList},
+            </if>
+            <if test="Status != null">
+                #{Status},
+            </if>
+            <if test="AddDate != null">
+                #{AddDate},
+            </if>
+            <if test="UserCode != null">
+                #{UserCode},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+        </trim>
+    </insert>
+
+    <!--用户修改-->
+    <update id="updateTbUser" parameterType="com.annet.entity.TbUser">
+        update tb_user set
+        <trim suffixOverrides=",">
+            <if test="UserName != null">
+                UserName = #{UserName},
+            </if>
+            <if test="Password != null and Password != ''">
+                Password = #{Password},
+            </if>
+            <if test="DeptName != null">
+                DeptName = #{DeptName},
+            </if>
+            <if test="RuleList != null">
+                RuleList = #{RuleList},
+            </if>
+            <if test="UserCode != null">
+                UserCode = #{UserCode},
+            </if>
+            <if test="Status != null">
+                Status = #{Status},
+            </if>
+        </trim>
+        where UserID = #{UserID}
+    </update>
+</mapper>

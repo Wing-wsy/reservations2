@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbBespokeresLsbMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbBespokeresLsb">
+        <result column="ID" property="id" />
+        <result column="UserID" property="UserID" />
+        <result column="ResID" property="ResID" />
+        <result column="HospitalType" property="HospitalType" />
+        <result column="PatientNum" property="PatientNum" />
+        <result column="PartID" property="PartID" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, UserID, ResID, HospitalType, PatientNum, PartID
+    </sql>
+
+    <!--通过医生ID查询-->
+    <select id="selectUserID" resultMap="BaseResultMap">
+        select * from tb_bespokeres_lsb where UserID = #{UserID}
+        <if test="PartID != 0">
+            and PartID = #{PartID}
+        </if>
+    </select>
+
+    <select id="selectByPartId" resultMap="BaseResultMap">
+        select * from tb_bespokeres_lsb where PartID in
+        <foreach collection="partIds" index="index" item="partIds" open="(" separator="," close=")">
+            #{partIds}
+        </foreach>
+    </select>
+
+    <!--提交成功和回滚成功后需要删除-->
+    <delete id="daleteUserID" >
+        delete from tb_bespokeres_lsb where ID = #{ID}
+    </delete>
+
+    <delete id="deletePartId">
+        delete from tb_bespokeres_lsb where PartID = #{partId}
+    </delete>
+
+    <!-- 占用号源的时候，添加 -->
+    <insert id="inserTbespokeresLsb" parameterType="com.annet.entity.TbBespokeresLsb"
+        useGeneratedKeys="false" keyProperty="id">
+        insert into tb_bespokeres_lsb
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="UserID != null">
+                UserID,
+            </if>
+            <if test="ResID != null">
+                ResID,
+            </if>
+            <if test="HospitalType != null">
+                HospitalType,
+            </if>
+            <if test="PatientNum != null">
+                PatientNum,
+            </if>
+            <if test="PartID != null">
+                PartID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="UserID != null">
+                #{UserID},
+            </if>
+            <if test="ResID != null">
+                #{ResID},
+            </if>
+            <if test="HospitalType != null">
+                #{HospitalType},
+            </if>
+            <if test="PatientNum != null">
+                #{PatientNum},
+            </if>
+            <if test="PartID != null">
+                #{PartID},
+            </if>
+        </trim>
+    </insert>
+</mapper>

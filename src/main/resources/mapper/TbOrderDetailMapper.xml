@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbOrderDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbOrderDetail">
+        <id column="ID" property="id" />
+        <result column="BespokeID" property="BespokeID" />
+        <result column="OrdRowID" property="OrdRowID" />
+        <result column="HISStudyProjectCode" property="HISStudyProjectCode" />
+        <result column="HISStudyProject" property="HISStudyProject" />
+        <result column="HISStudyPartCode" property="HISStudyPartCode" />
+        <result column="HISStudyPart" property="HISStudyPart" />
+        <result column="Fee" property="Fee" />
+        <result column="RequestNo" property="RequestNo" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, BespokeID, OrdRowID, HISStudyProjectCode, HISStudyProject, HISStudyPartCode, HISStudyPart, Fee,RequestNo
+    </sql>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_order_detail where ID = #{id}
+    </select>
+
+    <select id="selectByBespokeID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_order_detail where BespokeID = #{id}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_order_detail where BespokeID in
+        <foreach collection="ids" index="index" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </select>
+
+    <insert id="insertTbOrderDetail" parameterType="com.annet.entity.TbOrderDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="BespokeID != null">
+                BespokeID,
+            </if>
+            <if test="OrdRowID != null">
+                OrdRowID,
+            </if>
+            <if test="HISStudyProjectCode != null">
+                HISStudyProjectCode,
+            </if>
+            <if test="HISStudyProject != null">
+                HISStudyProject,
+            </if>
+            <if test="HISStudyPartCode != null">
+                HISStudyPartCode,
+            </if>
+            <if test="HISStudyPart != null">
+                HISStudyPart,
+            </if>
+            <if test="Fee != null">
+                Fee,
+            </if>
+            <if test="RequestNo != null">
+                RequestNo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="BespokeID != null">
+                #{BespokeID},
+            </if>
+            <if test="OrdRowID != null">
+                #{OrdRowID},
+            </if>
+            <if test="HISStudyProjectCode != null">
+                #{HISStudyProjectCode},
+            </if>
+            <if test="HISStudyProject != null">
+                #{HISStudyProject},
+            </if>
+            <if test="HISStudyPartCode != null">
+                #{HISStudyPartCode},
+            </if>
+            <if test="HISStudyPart != null">
+                #{HISStudyPart},
+            </if>
+            <if test="Fee != null">
+                #{Fee},
+            </if>
+            <if test="RequestNo != null">
+                #{RequestNo},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectDistinctByBespokeID" resultMap="BaseResultMap">
+        select
+        distinct OrdRowID,RequestNo
+        from tb_order_detail where BespokeID = #{id}
+    </select>
+
+</mapper>

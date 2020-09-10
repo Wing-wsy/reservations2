@@ -1,0 +1,9 @@
+//创建临时表，用于存放号源占用
+CREATE   TABLE   tb_bespokeres_lsb(
+  ID   int   IDENTITY   (1,   1)   NOT   NULL   ,
+  UserID nvarchar(20) NOT null,
+  ResID int Not null,
+  HospitalType nvarchar(2) not null,
+  PatientNum int Not null,
+  PartID int null,
+)

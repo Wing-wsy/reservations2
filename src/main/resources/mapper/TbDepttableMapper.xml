@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbDepttableMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbDepttable">
+        <id column="DeptID" property="DeptID" />
+        <result column="DeptCode" property="DeptCode" />
+        <result column="DeptName" property="DeptName" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="IsReserve" property="IsReserve" />
+        <result column="histype" property="histype" />
+        <result column="DeptPYM" property="DeptPYM" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        DeptID, DeptCode, DeptName,HospitalName,IsReserve
+    </sql>
+
+    <!--科室列表（按院区筛选）-->
+    <select id="selectFinAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+         from tb_depttable where 1=1
+        <if test="histype != null ">
+            and histype = #{histype}
+        </if>
+        <if test="IsReserve != null ">
+            and IsReserve = #{IsReserve}
+        </if>
+        <if test="HospitalName != null and HospitalName !='' ">
+            and HospitalName = #{HospitalName}
+        </if>
+        or HospitalName = 'all'
+    </select>
+
+    <!--科室代码查重-->
+    <select id="selectDeptCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_depttable
+        where DeptCode = #{DeptCode}
+        <if test="DeptID != 0">
+            and DeptID != #{DeptID}
+        </if>
+    </select>
+
+    <!--科室名称查重-->
+    <select id="selectDeptName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_depttable
+        where DeptName = #{DeptName}
+        <if test="DeptID != 0">
+            and DeptID != #{DeptID}
+        </if>
+    </select>
+
+    <!--添加科室(0是非医技预约科室，1是医技预约科室)-->
+    <insert id="addTbDepttable" parameterType="com.annet.entity.TbDepttable" useGeneratedKeys="true"
+        keyProperty="DeptID">
+        insert into tb_depttable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="DeptCode != null">
+                DeptCode,
+            </if>
+            <if test="DeptName != null">
+                DeptName,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+            <if test="IsReserve != null">
+                IsReserve,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="DeptCode != null">
+                #{DeptCode},
+            </if>
+            <if test="DeptName != null">
+                #{DeptName},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+            <if test="IsReserve != null">
+                #{IsReserve},
+            </if>
+        </trim>
+    </insert>
+
+    <!--添加科室(0是非医技预约科室，1是医技预约科室)-->
+    <insert id="addTable" parameterType="com.annet.entity.TbDepttable" useGeneratedKeys="true"
+            keyProperty="DeptID">
+        insert into tb_depttable
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="DeptCode != null">
+                DeptCode,
+            </if>
+            <if test="DeptName != null">
+                DeptName,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+            <if test="IsReserve != null">
+                IsReserve,
+            </if>
+            <if test="histype != null">
+                histype,
+            </if>
+            <if test="DeptPYM != null">
+                DeptPYM,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="DeptCode != null">
+                #{DeptCode},
+            </if>
+            <if test="DeptName != null">
+                #{DeptName},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+            <if test="IsReserve != null">
+                #{IsReserve},
+            </if>
+            <if test="histype != null">
+                #{histype},
+            </if>
+            <if test="DeptPYM != null">
+                #{DeptPYM},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改科室（院区不允许修改）-->
+    <update id="updateTbDepttable" parameterType="com.annet.entity.TbDepttable">
+        update tb_depttable set
+        <trim suffixOverrides=",">
+            <if test="DeptCode != null">
+                DeptCode = #{DeptCode},
+            </if>
+            <if test="DeptName != null">
+                DeptName = #{DeptName},
+            </if>
+            <if test="IsReserve != null">
+                IsReserve = #{IsReserve},
+            </if>
+        </trim>
+        where DeptID = #{DeptID}
+    </update>
+
+    <!--更新科室-->
+    <update id="updateTable" parameterType="com.annet.entity.TbDepttable">
+        update tb_depttable set
+        <trim suffixOverrides=",">
+            <if test="histype != null">
+                histype = #{histype},
+            </if>
+            <if test="DeptPYM != null">
+                DeptPYM = #{DeptPYM},
+            </if>
+        </trim>
+        where DeptCode = #{DeptCode} and HospitalName = #{HospitalName}
+    </update>
+
+    <!--根据deptId删除科室-->
+    <delete id="deleteTbDeptTableByDeptId">
+      delete from tb_depttable where DeptID = #{DeptID}
+    </delete>
+
+    <!--根据deptCode和hospitalName查询科室-->
+    <select id="selectDeptCodeAndHospitalName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_depttable
+        where DeptCode = #{deptCode} and HospitalName = #{hospitalName}
+    </select>
+
+</mapper>

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbMethodPartMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbMethodPart">
+        <id column="ID" property="id" />
+        <result column="Modality" property="Modality" />
+        <result column="HISStudyProjectCode" property="HISStudyProjectCode" />
+        <result column="HISStudyProject" property="HISStudyProject" />
+        <result column="HISStudyPartCode" property="HISStudyPartCode" />
+        <result column="HISStudyPart" property="HISStudyPart" />
+        <result column="StudyMethod" property="StudyMethod" />
+        <result column="StudyPartCode" property="StudyPartCode" />
+        <result column="StudyPart" property="StudyPart" />
+        <result column="TimeCoefficient" property="TimeCoefficient" />
+        <result column="BespokeTimeSpan" property="BespokeTimeSpan" />
+        <result column="Warning" property="Warning" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="isMain" property="isMain" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="isMain" property="isMain" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, Modality, HISStudyProjectCode, HISStudyProject, HISStudyPartCode,
+        HISStudyPart, StudyMethod, StudyPartCode, StudyPart,
+        TimeCoefficient, BespokeTimeSpan, Warning,HospitalName,isMain
+    </sql>
+
+    <!--查询列表(带上院区参数)-->
+    <select id="selectFinAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from tb_method_part where 1=1
+        <if test="hospitalName != null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--查询列表(带上院区参数以及搜索参数)-->
+    <select id="selectFinAllNew" resultMap="BaseResultMap" parameterType="com.annet.vo.TbMethodPartVo">
+        select
+        <include refid="Base_Column_List" />
+        from tb_method_part where 1=1
+        <if test="modality != null and modality!='' ">
+            and Modality = #{modality}
+        </if>
+        <if test="hisStudyProjectCode != null and hisStudyProjectCode != ''">
+            and HISStudyProjectCode = #{hisStudyProjectCode}
+        </if>
+        <if test="hisStudyProject != null and hisStudyProject!=''">
+            and HISStudyProject = #{hisStudyProject}
+        </if>
+        <if test="hisStudyPartCode != null and hisStudyPartCode !='' ">
+            and HISStudyPartCode = #{hisStudyPartCode}
+        </if>
+        <if test="hisStudyPart != null and  hisStudyPart !=''">
+            and HISStudyPart = #{hisStudyPart}
+        </if>
+        <if test="studyMethod != null and studyMethod !='' and studyMethod !='全部'">
+            and StudyMethod = #{studyMethod}
+        </if>
+        <if test="studyPartCode != null and studyPartCode!=''">
+            and StudyPartCode = #{studyPartCode}
+        </if>
+        <if test="studyPart != null and studyPart != '' ">
+            and StudyPart = #{studyPart}
+        </if>
+        <if test="timeCoefficient != null">
+            and TimeCoefficient = #{timeCoefficient}
+        </if>
+        <if test="bespokeTimeSpan != null and bespokeTimeSpan!=''">
+            and BespokeTimeSpan = #{bespokeTimeSpan}
+        </if>
+        <if test="warning != null and warning!=''">
+            and Warning = #{warning}
+        </if>
+        <if test="isMain != null">
+            and IsMain = #{isMain}
+        </if>
+        <if test="hospitalName != null and hospitalName!='' ">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--根据科室与院区查询检查部位列表-->
+    <select id="selectFindAll" resultMap="BaseResultMap">
+        select distinct  a.ID, a.Modality, a.HISStudyProjectCode, a.HISStudyProject, a.HISStudyPartCode,
+        a.HISStudyPart, a.StudyMethod, a.StudyPartCode, a.StudyPart, a.TimeCoefficient, a.BespokeTimeSpan,
+        a.Warning,a.HospitalName,a.isMain from tb_method_part a  inner join tb_studyroom b on a.Modality=b.Modality
+        where 1=1
+        <if test="deptName != null">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="hospitalName != null">
+            and b.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--根据科室与院区以及搜索参数查询检查部位列表-->
+    <select id="selectFindAllNew" resultMap="BaseResultMap">
+        select distinct  a.ID, a.Modality, a.HISStudyProjectCode, a.HISStudyProject, a.HISStudyPartCode,
+        a.HISStudyPart, a.StudyMethod, a.StudyPartCode, a.StudyPart, a.TimeCoefficient, a.BespokeTimeSpan,
+        a.Warning,a.HospitalName,a.isMain from tb_method_part a  inner join tb_studyroom b on a.Modality=b.Modality
+        where 1=1
+        <if test="modality != null and modality!='' ">
+            and a.Modality = #{modality}
+        </if>
+        <if test="hisStudyProjectCode != null and hisStudyProjectCode != ''">
+            and a.HISStudyProjectCode = #{hisStudyProjectCode}
+        </if>
+        <if test="hisStudyProject != null and hisStudyProject!=''">
+            and a.HISStudyProject = #{hisStudyProject}
+        </if>
+        <if test="hisStudyPartCode != null and hisStudyPartCode !='' ">
+            and a.HISStudyPartCode = #{hisStudyPartCode}
+        </if>
+        <if test="hisStudyPart != null and  hisStudyPart !=''">
+            and a.HISStudyPart = #{hisStudyPart}
+        </if>
+        <if test="studyMethod != null and studyMethod !=''">
+            and a.StudyMethod = #{studyMethod}
+        </if>
+        <if test="studyPartCode != null and studyPartCode!='' ">
+            and a.StudyPartCode = #{studyPartCode}
+        </if>
+        <if test="studyPart != null and studyPart != '' ">
+            and a.StudyPart = #{studyPart}
+        </if>
+        <if test="timeCoefficient != null">
+            and a.TimeCoefficient = #{timeCoefficient}
+        </if>
+        <if test="bespokeTimeSpan != null and bespokeTimeSpan!=''">
+            and a.BespokeTimeSpan = #{bespokeTimeSpan}
+        </if>
+        <if test="warning != null and warning!=''">
+            and a.Warning = #{warning}
+        </if>
+        <if test="isMain != null">
+            and a.IsMain = #{isMain}
+        </if>
+        <if test="deptName != null and deptName!=''">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="hospitalName != null and hospitalName!='' ">
+            and b.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--判断重复-->
+    <select id="selectCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_method_part where 1=1
+        <if test="Modality != null">
+            and Modality = #{Modality}
+        </if>
+        <if test="HISStudyProjectCode != null">
+            and HISStudyProjectCode = #{HISStudyProjectCode}
+        </if>
+        <if test="HISStudyProject != null">
+            and HISStudyProject = #{HISStudyProject}
+        </if>
+        <if test="HISStudyPartCode != null">
+            and HISStudyPartCode = #{HISStudyPartCode}
+        </if>
+        <if test="HISStudyPart != null">
+            and HISStudyPart = #{HISStudyPart}
+        </if>
+        <if test="HospitalName != null">
+            and HospitalName = #{HospitalName}
+        </if>
+        <if test="isMain != null">
+            and isMain = #{isMain}
+        </if>
+        <if test="id != null">
+            and ID != #{id}
+        </if>
+    </select>
+
+    <!--添加-->
+    <insert id="insertTbMethodPart" parameterType="com.annet.entity.TbMethodPart"
+        useGeneratedKeys="true" keyProperty="id">
+        insert into tb_method_part
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                Modality,
+            </if>
+            <if test="HISStudyProjectCode != null">
+                HISStudyProjectCode,
+            </if>
+            <if test="HISStudyProject != null">
+                HISStudyProject,
+            </if>
+            <if test="HISStudyPartCode != null">
+                HISStudyPartCode,
+            </if>
+            <if test="HISStudyPart != null">
+                HISStudyPart,
+            </if>
+            <if test="StudyMethod != null">
+                StudyMethod,
+            </if>
+            <if test="StudyPartCode != null">
+                StudyPartCode,
+            </if>
+            <if test="StudyPart != null">
+                StudyPart,
+            </if>
+            <if test="TimeCoefficient != null">
+                TimeCoefficient,
+            </if>
+            <if test="BespokeTimeSpan != null">
+                BespokeTimeSpan,
+            </if>
+            <if test="Warning != null">
+                Warning,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+            <if test="isMain != null">
+                isMain,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                #{Modality},
+            </if>
+            <if test="HISStudyProjectCode != null">
+                #{HISStudyProjectCode},
+            </if>
+            <if test="HISStudyProject != null">
+                #{HISStudyProject},
+            </if>
+            <if test="HISStudyPartCode != null">
+                #{HISStudyPartCode},
+            </if>
+            <if test="HISStudyPart != null">
+                #{HISStudyPart},
+            </if>
+            <if test="StudyMethod != null">
+                #{StudyMethod},
+            </if>
+            <if test="StudyPartCode != null">
+                #{StudyPartCode},
+            </if>
+            <if test="StudyPart != null">
+                #{StudyPart},
+            </if>
+            <if test="TimeCoefficient != null">
+                #{TimeCoefficient},
+            </if>
+            <if test="BespokeTimeSpan != null">
+                #{BespokeTimeSpan},
+            </if>
+            <if test="Warning != null">
+                #{Warning},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+            <if test="isMain != null">
+                #{isMain},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改-->
+    <update id="updateTbMethodPart" parameterType="com.annet.entity.TbMethodPart">
+        update tb_method_part set
+        <trim suffixOverrides=",">
+            <if test="Modality != null">
+                Modality = #{Modality},
+            </if>
+            <if test="HISStudyProjectCode != null">
+                HISStudyProjectCode = #{HISStudyProjectCode},
+            </if>
+            <if test="HISStudyProject != null">
+                HISStudyProject = #{HISStudyProject},
+            </if>
+            <if test="HISStudyPartCode != null">
+                HISStudyPartCode = #{HISStudyPartCode},
+            </if>
+            <if test="HISStudyPart != null">
+                HISStudyPart = #{HISStudyPart},
+            </if>
+            <if test="StudyMethod != null">
+                StudyMethod = #{StudyMethod},
+            </if>
+            <if test="StudyPartCode != null">
+                StudyPartCode = #{StudyPartCode},
+            </if>
+            <if test="StudyPart != null">
+                StudyPart = #{StudyPart},
+            </if>
+            <if test="TimeCoefficient != null">
+                TimeCoefficient = #{TimeCoefficient},
+            </if>
+            <if test="BespokeTimeSpan != null">
+                BespokeTimeSpan = #{BespokeTimeSpan},
+            </if>
+            <if test="Warning != null">
+                Warning = #{Warning},
+            </if>
+            <if test="HospitalName != null">
+                HospitalName= #{HospitalName},
+            </if>
+            <if test="isMain != null">
+                isMain= #{isMain},
+            </if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteTbMethodPart">
+      delete from tb_method_part where ID = #{ID}
+    </delete>
+
+    <!--预约时对照查看能不能预约-->
+    <select id="selectYJReservation" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_method_part
+        where 1=1
+        <if test="Modality != null ">
+            and Modality = #{Modality}
+        </if>
+        <if test="HISStudyProjectCode != null">
+            and HISStudyProjectCode = #{HISStudyProjectCode}
+        </if>
+        <if test="HISStudyProject != null">
+            and HISStudyProject = #{HISStudyProject}
+        </if>
+        <if test="HISStudyPartCode != null">
+            and HISStudyPartCode = #{HISStudyPartCode}
+        </if>
+        <if test="HISStudyPart != null">
+            and HISStudyPart = #{HISStudyPart}
+        </if>
+        <if test='HospitalName != null and HospitalName!="" '>
+            and HospitalName = #{HospitalName}
+        </if>
+    </select>
+
+    <select id="selectYJReservationNew" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_method_part
+        where 1=1
+        <if test="Modality != null and Modality!='' ">
+            and Modality = #{Modality}
+        </if>
+        <if test="HISStudyPart != null ">
+            and HISStudyPart = #{HISStudyPart}
+        </if>
+        <if test='HospitalName != null and HospitalName!="" '>
+            and HospitalName = #{HospitalName}
+        </if>
+    </select>
+
+
+    <!--通过ID获取(重新了前方法)-->
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_method_part where id = #{id}
+    </select>
+
+    <!--根据设备查找部位-->
+    <select id="selectModality" resultMap="BaseResultMap">
+         select ID,StudyPart from tb_method_part  where Modality = #{modality}
+    </select>
+
+    <!--根据设备和方法查找部位-->
+    <select id="selectModalityAndMethod" resultMap="BaseResultMap">
+        select distinct mp.ID,mp.StudyPart from tb_method_part mp  left join tb_studyroom ts on mp.Modality=ts.Modality
+        where mp.Modality = #{modality} and mp.StudyMethod = #{method}
+        <if test="deptName != null">
+            and ts.DeptName = #{deptName}
+        </if>
+        <if test="hospitalName != null">
+            and ts.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <select id="selectModalityAndMethod1" resultMap="BaseResultMap">
+        select distinct mp.ID,mp.StudyPart from tb_method_part mp  left join tb_studyroom ts on mp.Modality=ts.Modality
+        where mp.Modality = #{modality} and mp.StudyMethod = #{method}
+        <if test="hospitalName != null">
+            and ts.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <resultMap type="com.annet.xmlEntity.GetRequestInfo" id="resultMap">
+        <result column="requestno" property="requestNo" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="ordrowid" property="ordRowID" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="modality" property="modality" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="studypart" property="studyPart" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="studypartcode" property="studyPartCode" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="studyproject" property="studyProject" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="studyprojectcode" property="studyProjectCode" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="methodpartcount" property="methodPartCount" javaType="java.lang.Integer"
+                jdbcType="INTEGER" />
+        <result column="bespokecount" property="bespokeCount" javaType="java.lang.Integer"
+                jdbcType="INTEGER" />
+        <result column="partid" property="partID" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="timecoefficient" property="timeCoefficient" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="studymethod" property="studyMethod" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="bespokestudydate" property="bespokeStudyDate" javaType="java.sql.Date"
+                jdbcType="DATE" />
+        <result column="onlinebespoke" property="onlineBespoke" javaType="java.lang.Integer"
+                jdbcType="INTEGER" />
+    </resultMap>
+    <!--调用存储过程返回是否匹配和可预约-->
+    <select id="getMethodAndBespokeCount" parameterType="java.util.Map" statementType="CALLABLE"
+            resultMap="resultMap">
+        {CALL PROC_GetStudyProjectBespokeInfo
+        (#{RequestXml,mode=IN,jdbcType=VARCHAR},
+         #{HospitalName,mode=IN,jdbcType=VARCHAR}
+        )}
+    </select>
+</mapper>

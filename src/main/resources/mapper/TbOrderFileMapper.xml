@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbOrderFileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbOrderFile">
+        <result column="ID" property="id" />
+        <result column="BespokeID" property="BespokeID" />
+        <result column="vHISJPGFile" property="vHISJPGFile" />
+        <result column="OperatDate" property="OperatDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, BespokeID, vHISJPGFile, OperatDate
+    </sql>
+
+
+    <insert id="insertTbOrderFile" parameterType="com.annet.entity.TbOrderFile"  useGeneratedKeys="true" keyProperty="id">
+        insert into tb_order_file
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="BespokeID != null" >
+                BespokeID,
+            </if>
+            <if test="vHISJPGFile != null" >
+                vHISJPGFile,
+            </if>
+            <if test="OperatDate != null" >
+                OperatDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="BespokeID != null" >
+                #{BespokeID},
+            </if>
+            <if test="vHISJPGFile != null" >
+                #{vHISJPGFile},
+            </if>
+            <if test="OperatDate != null" >
+                #{OperatDate},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

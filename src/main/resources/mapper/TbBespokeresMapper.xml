@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbBespokeresMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbBespokeres">
+        <id column="ID" property="id" />
+        <result column="Modality" property="Modality" />
+        <result column="GroupType" property="GroupType" />
+        <result column="GroupName" property="GroupName" />
+        <result column="BespokeDate" property="BespokeDate" />
+        <result column="StartTime" property="StartTime" />
+        <result column="EndTime" property="EndTime" />
+        <result column="OutPatientNum" property="OutPatientNum" />
+        <result column="OutPatientBespokeNum" property="OutPatientBespokeNum" />
+        <result column="InPatientNum" property="InPatientNum" />
+        <result column="InPatientBespokeNum" property="InPatientBespokeNum" />
+        <result column="TotalNum" property="TotalNum" />
+        <result column="TotalBespokeNum" property="TotalBespokeNum" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="ResType" property="ResType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, Modality, GroupType, GroupName, BespokeDate, StartTime, EndTime, OutPatientNum, OutPatientBespokeNum, InPatientNum, InPatientBespokeNum, TotalNum, TotalBespokeNum,HospitalName,ResType
+    </sql>
+
+    <!-- 查询列表 -->
+    <select id="selectFinAll" parameterType="com.annet.entity.TbBespokeres"
+        resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where 1=1
+        <if test="Modality != null and Modality !='' ">
+            and Modality = #{Modality}
+        </if>
+        <if test="GroupType != null and GroupType !='' ">
+            and GroupType = #{GroupType}
+        </if>
+        <if test="GroupName != null and GroupName !='' ">
+            and GroupName = #{GroupName}
+        </if>
+        <if test="BespokeDate != null ">
+            and BespokeDate >= #{BespokeDate}
+        </if>
+        <if test="StartTime != null and StartTime !='' ">
+            and StartTime = #{StartTime}
+        </if>
+        <if test="EndTime != null and EndTime !='' ">
+            and EndTime = #{EndTime}
+        </if>
+        <if test="HospitalName != null and HospitalName !='' ">
+            and HospitalName = #{HospitalName}
+        </if>
+        <if test="ResType != null ">
+            and ResType = #{ResType}
+        </if>
+    </select>
+
+    <!--号源列表查询（登录权限）-->
+    <select id="selectFindAll" parameterType="com.annet.entity.TbBespokeres"
+        resultMap="BaseResultMap">
+        select distinct
+        a.ID,a.Modality,a.GroupType,a.GroupName,a.BespokeDate,a.StartTime, a.EndTime,
+        a.OutPatientNum, a.OutPatientBespokeNum, a.InPatientNum, a.InPatientBespokeNum, a.TotalNum,
+        a.TotalBespokeNum,a.HospitalName,a.ResType
+        from tb_bespokeres a inner join tb_studyroom b on a.Modality=b.Modality where 1=1
+        <if test="HospitalName != null and HospitalName != '' ">
+            and a.HospitalName = #{HospitalName}
+        </if>
+        <if test="BespokeDate != null ">
+            and BespokeDate >= #{BespokeDate}
+        </if>
+        <if test="Modality != null and Modality != '' ">
+            and a.Modality = #{Modality}
+        </if>
+        <if test="GroupType != null ">
+            and a.GroupType = #{GroupType}
+        </if>
+        <if test="GroupName != null and GroupName != '' ">
+            and a.GroupName = #{GroupName}
+        </if>
+        <if test="DeptName != null and DeptName != '' ">
+            and b.DeptName = #{DeptName}
+        </if>
+        <if test="ResType != null ">
+            and a.ResType = #{ResType}
+        </if>
+
+    </select>
+
+    <!-- 根据检查名称获集合取号源集合-->
+    <select id="searchBospokerer" parameterType="com.annet.entity.TbBespokeres"
+        resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where 1=1
+        and GroupName in
+        <foreach collection="groupNames" index="index" item="groupNames" open="(" separator=","
+            close=")">
+            #{groupNames}
+        </foreach>
+        <if test="modality != null">
+            and Modality = #{modality}
+        </if>
+        <if test="groupType != null">
+            and GroupType = #{groupType}
+        </if>
+        <if test="startDate != null">
+            and <![CDATA[ BespokeDate >= #{startDate} ]]>
+        </if>
+        <if test="endDate != null">
+            and <![CDATA[ BespokeDate <= #{endDate} ]]>
+        </if>
+        <if test="hospitalName != null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--根据检查名称获取号源集合-->
+    <select id="searchBospokererList" parameterType="com.annet.entity.TbBespokeres"
+        resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where 1=1
+        <if test="modality != null">
+            and Modality = #{modality}
+        </if>
+        <if test="groupType != null">
+            and GroupType = #{groupType}
+        </if>
+        <if test="groupName != null">
+            and GroupName = #{groupName}
+        </if>
+        <if test="startDate != null">
+            and <![CDATA[ BespokeDate >= #{startDate} ]]>
+        </if>
+        <if test="endDate != null">
+            and <![CDATA[ BespokeDate <= #{endDate} ]]>
+        </if>
+        <if test="hospitalName != null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="insertTbBespokeres" parameterType="com.annet.entity.TbBespokeres"
+        useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+        insert into tb_bespokeres
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                Modality,
+            </if>
+            <if test="GroupType != null">
+                GroupType,
+            </if>
+            <if test="GroupName != null">
+                GroupName,
+            </if>
+            <if test="BespokeDate != null">
+                BespokeDate,
+            </if>
+            <if test="StartTime != null">
+                StartTime,
+            </if>
+            <if test="EndTime != null">
+                EndTime,
+            </if>
+            <if test="OutPatientNum != null">
+                OutPatientNum,
+            </if>
+            <if test="OutPatientBespokeNum != null">
+                OutPatientBespokeNum,
+            </if>
+            <if test="InPatientNum != null">
+                InPatientNum,
+            </if>
+            <if test="InPatientBespokeNum != null">
+                InPatientBespokeNum,
+            </if>
+            <if test="TotalNum != null">
+                TotalNum,
+            </if>
+            <if test="TotalBespokeNum != null">
+                TotalBespokeNum,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+            <if test="ResType != null">
+                ResType,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                #{Modality},
+            </if>
+            <if test="GroupType != null">
+                #{GroupType},
+            </if>
+            <if test="GroupName != null">
+                #{GroupName},
+            </if>
+            <if test="BespokeDate != null">
+                #{BespokeDate},
+            </if>
+            <if test="StartTime != null">
+                #{StartTime},
+            </if>
+            <if test="EndTime != null">
+                #{EndTime},
+            </if>
+            <if test="OutPatientNum != null">
+                #{OutPatientNum},
+            </if>
+            <if test="OutPatientBespokeNum != null">
+                #{OutPatientBespokeNum},
+            </if>
+            <if test="InPatientNum != null">
+                #{InPatientNum},
+            </if>
+            <if test="InPatientBespokeNum != null">
+                #{InPatientBespokeNum},
+            </if>
+            <if test="TotalNum != null">
+                #{TotalNum},
+            </if>
+            <if test="TotalBespokeNum != null">
+                #{TotalBespokeNum},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+            <if test="ResType != null">
+                #{ResType},
+            </if>
+        </trim>
+            select SCOPE_IDENTITY() as id
+            SET NOCOUNT OFF
+        </selectKey>
+    </insert>
+
+    <!-- 修改 -->
+    <update id="updateTbBespokeres" parameterType="com.annet.entity.TbBespokeres">
+        update tb_bespokeres set
+        <trim suffixOverrides=",">
+            <if test="Modality != null">
+                Modality = #{Modality},
+            </if>
+            <if test="GroupType != null">
+                GroupType = #{GroupType},
+            </if>
+            <if test="GroupName != null">
+                GroupName = #{GroupName},
+            </if>
+            <if test="BespokeDate != null">
+                BespokeDate = #{BespokeDate},
+            </if>
+            <if test="StartTime != null">
+                StartTime = #{StartTime},
+            </if>
+            <if test="EndTime != null">
+                EndTime = #{EndTime},
+            </if>
+            <if test="OutPatientNum != null">
+                OutPatientNum = #{OutPatientNum},
+            </if>
+            <if test="OutPatientBespokeNum != null">
+                OutPatientBespokeNum = #{OutPatientBespokeNum},
+            </if>
+            <if test="InPatientNum != null">
+                InPatientNum = #{InPatientNum},
+            </if>
+            <if test="InPatientBespokeNum != null">
+                InPatientBespokeNum = #{InPatientBespokeNum},
+            </if>
+            <if test="TotalNum != null">
+                TotalNum = #{TotalNum},
+            </if>
+            <if test="TotalBespokeNum != null">
+                TotalBespokeNum = #{TotalBespokeNum},
+            </if>
+            <if test="ResType != null">
+                ResType = #{ResType},
+            </if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!-- 修改停诊号源表的号源为0 -->
+    <update id="updateTbBespokeresToZero" parameterType="com.annet.entity.TbBespokeres">
+        update tb_bespokeres set
+        <trim suffixOverrides=",">
+            <if test="OutPatientNum != null">
+                OutPatientNum = #{OutPatientNum},
+            </if>
+            <if test="InPatientNum != null">
+                InPatientNum = #{InPatientNum},
+            </if>
+            <if test="TotalNum != null">
+                TotalNum = #{TotalNum},
+            </if>
+        </trim>
+        where ID in
+        <foreach collection="ids" index="index" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteTbBespokeres">
+      delete from tb_bespokeres where ID = #{ID}
+    </delete>
+
+    <!--推荐号源接收实体类-->
+    <resultMap type="com.annet.entity.domain.GetRecommendation" id="resultMap">
+        <result column="PartID" property="PartID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="HospitalType" property="HospitalType" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="GroupType" property="GroupType" javaType="java.lang.Integer"
+            jdbcType="INTEGER" />
+        <result column="GroupName" property="GroupName" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="BespokeDate" property="BespokeDate" javaType="java.sql.Date"
+            jdbcType="DATE" />
+        <result column="StartTime" property="StartTime" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="EndTime" property="EndTime" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="ResID" property="ResID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="HospitalName" property="HospitalName" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="Modality" property="Modality" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--调用存储过程获取预约号源-->
+    <select id="getRecommendation" parameterType="java.util.Map" statementType="CALLABLE"
+        resultMap="resultMap">
+        {CALL PROC_GetRecommendation
+        (#{RequestXml,mode=IN,jdbcType=VARCHAR},
+         #{Preference,mode=IN,jdbcType=INTEGER},
+         #{StartDate,mode=IN,jdbcType=VARCHAR},
+         #{EndDate,mode=IN,jdbcType=VARCHAR},
+         #{TimeFrame,mode=IN,jdbcType=INTEGER},
+         #{HospitalName,mode=IN,jdbcType=VARCHAR},
+         #{ResType,mode=IN,jdbcType=VARCHAR}
+        )}
+    </select>
+
+    <!--自选方案推荐实体类-->
+    <resultMap type="com.annet.entity.domain.GetBespokeRes" id="resultBespokeRes">
+        <result column="ResID" property="ResID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="GroupType" property="GroupType" javaType="java.lang.Integer"
+            jdbcType="INTEGER" />
+        <result column="GroupName" property="GroupName" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="BespokeDate" property="BespokeDate" javaType="java.sql.Date"
+            jdbcType="DATE" />
+        <result column="StartTime" property="StartTime" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="EndTime" property="EndTime" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="OutPatientNum" property="OutPatientNum" javaType="java.lang.Integer"
+            jdbcType="INTEGER" />
+        <result column="OutPatientBespokeNum" property="OutPatientBespokeNum"
+            javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="InPatientNum" property="InPatientNum" javaType="java.lang.Integer"
+            jdbcType="INTEGER" />
+        <result column="InPatientBespokeNum" property="InPatientBespokeNum"
+            javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="TotalNum" property="TotalNum" javaType="java.lang.Integer"
+            jdbcType="INTEGER" />
+        <result column="TotalBespokeNum" property="TotalBespokeNum" javaType="java.lang.Integer"
+            jdbcType="INTEGER" />
+        <result column="HospitalName" property="HospitalName" javaType="java.lang.String"
+            jdbcType="VARCHAR" />
+        <result column="NotBespokeResDay" property="NotBespokeResDay" javaType="java.sql.Date"
+                jdbcType="DATE" />
+    </resultMap>
+
+    <!--自选方案，通过检查方法获取号源-->
+    <select id="getBespokeRes" parameterType="java.util.Map" statementType="CALLABLE"
+        resultMap="resultBespokeRes">
+        {CALL PROC_GetBespokeRes
+        (#{PartID,mode=IN,jdbcType=INTEGER},
+         #{TimeCoefficient,mode=IN,jdbcType=INTEGER},
+         #{HospitalType,mode=IN,jdbcType=VARCHAR},
+         #{StartDate,mode=IN,jdbcType=VARCHAR},
+         #{EndDate,mode=IN,jdbcType=VARCHAR},
+         #{HospitalName,mode=IN,jdbcType=VARCHAR},
+         #{StudyRoom,mode=IN,jdbcType=VARCHAR},
+         #{ResType,mode=IN,jdbcType=VARCHAR}
+        )}
+    </select>
+
+    <!--微信端自选方案，通过检查方法获取无号源日期-->
+    <select id="getNotBespokeResDay" parameterType="java.util.Map" statementType="CALLABLE"
+            resultMap="resultBespokeRes">
+        {CALL PROC_GetNotBespokeResDay
+        (#{PartID,mode=IN,jdbcType=INTEGER},
+         #{TimeCoefficient,mode=IN,jdbcType=INTEGER},
+         #{HospitalType,mode=IN,jdbcType=VARCHAR},
+         #{StartDate,mode=IN,jdbcType=VARCHAR},
+         #{EndDate,mode=IN,jdbcType=VARCHAR},
+         #{HospitalName,mode=IN,jdbcType=VARCHAR}
+        )}
+    </select>
+
+    <!--获取自选方案可预约的检查房间-->
+    <select id="getStudyGroupName" parameterType="java.util.Map" statementType="CALLABLE"
+            resultMap="resultBespokeRes">
+        {CALL PROC_GetStudyRoom
+        (#{PartID,mode=IN,jdbcType=INTEGER},
+         #{TimeCoefficient,mode=IN,jdbcType=INTEGER},
+         #{HospitalType,mode=IN,jdbcType=VARCHAR},
+         #{StartDate,mode=IN,jdbcType=VARCHAR},
+         #{EndDate,mode=IN,jdbcType=VARCHAR},
+         #{HospitalName,mode=IN,jdbcType=VARCHAR}
+        )}
+    </select>
+
+    <!--修改数据库号源(加法)-->
+    <update id="updateBespokeAddition" parameterType="com.annet.entity.operating.HgBespoke">
+        update tb_bespokeres set
+        <trim suffixOverrides=",">
+            <if test='patientNum != null and hospitalType == "N"'>
+                OutPatientBespokeNum = OutPatientBespokeNum + #{patientNum},
+            </if>
+            <if test='patientNum != null and hospitalType == "Y"'>
+                InPatientBespokeNum = InPatientBespokeNum + #{patientNum},
+            </if>
+            <if test="patientNum != null">
+                TotalBespokeNum = TotalBespokeNum + #{patientNum},
+            </if>
+        </trim>
+        where ID = #{resID}
+    </update>
+
+    <!--取消预约时获取号源-->
+    <select id="selectBespokeres" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where 1=1
+        <if test="Modality != null">
+            and Modality = #{Modality}
+        </if>
+        <if test="GroupType != null">
+            and GroupType = #{GroupType}
+        </if>
+        <if test="GroupName != null">
+            and GroupName = #{GroupName}
+        </if>
+        <if test="BespokeDate != null">
+            and BespokeDate = #{BespokeDate}
+        </if>
+        <if test="StartTime != null">
+            and <![CDATA[ StartTime <= #{StartTime} ]]>
+        </if>
+        <if test="EndTime != null">
+            and <![CDATA[ EndTime >= #{EndTime} ]]>
+        </if>
+        <if test="OutPatientNum != null">
+            and OutPatientNum = #{OutPatientNum}
+        </if>
+        <if test="OutPatientBespokeNum != null">
+            and OutPatientBespokeNum = #{OutPatientBespokeNum}
+        </if>
+        <if test="InPatientNum != null">
+            and InPatientNum = #{InPatientNum}
+        </if>
+        <if test="TotalNum != null">
+            and TotalNum = #{TotalNum}
+        </if>
+        <if test="TotalBespokeNum != null">
+            and TotalBespokeNum = #{TotalBespokeNum}
+        </if>
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where ID = #{id}
+    </select>
+
+    <select id="selectFind" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+        from tb_bespokeres
+        where Modality = #{modality}
+        and GroupType = #{groupType}
+        and GroupName = #{groupName}
+        and BespokeDate = #{bespokeDate}
+        and StartTime = #{startTime}
+        and EndTime = #{endTime}
+        and HospitalName = #{hospitalName}
+    </select>
+
+    <select id="selectFindNew" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres
+        where Modality = #{modality}
+        and GroupType = #{groupType}
+        and GroupName = #{groupName}
+        and BespokeDate = #{bespokeDate}
+        <if test="startTime!=null and startTime!='' ">
+            and <![CDATA[ StartTime <= #{startTime} ]]>
+        </if>
+        <if test="endTime!=null and endTime !='' ">
+            and <![CDATA[ EndTime >= #{endTime} ]]>
+        </if>
+        and HospitalName = #{hospitalName}
+    </select>
+
+    <!--号源管理列表重复-->
+    <select id="selectCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where 1=1
+        <if test="Modality != null">
+            and Modality = #{Modality}
+        </if>
+        <if test="GroupType != null">
+            and GroupType = #{GroupType}
+        </if>
+        <if test="GroupName != null">
+            and GroupName = #{GroupName}
+        </if>
+        <if test="BespokeDate != null">
+            and BespokeDate = #{BespokeDate}
+        </if>
+        <if test="StartTime != null">
+            and StartTime = #{StartTime}
+        </if>
+        <if test="EndTime != null">
+            and EndTime = #{EndTime}
+        </if>
+        <if test="ResType != null">
+            and ResType = #{ResType}
+        </if>
+        <if test="id != null">
+            and ID != #{id}
+        </if>
+
+    </select>
+
+    <select id="selectAllModality" resultMap="BaseResultMap">
+        select distinct * from tb_bespokeres;
+    </select>
+
+    <!-- 通用查询映射结果
+    <resultMap id="BaseResultMapLog" type="com.annet.entity.operating.LogEntity">
+        <id column="ID" property="id" />
+        <result column="resID" property="resID" />
+        <result column="operaction" property="operaction" />
+        <result column="HospitalType" property="HospitalType" />
+        <result column="OutpatientBespokeNum" property="OutpatientBespokeNum" />
+        <result column="InPatientBespokeNum" property="InPatientBespokeNum" />
+        <result column="date" property="date" />
+    </resultMap>-->
+
+    <!-- 添加号源日志 -->
+    <insert id="insertTbBespokeresLog" parameterType="com.annet.entity.operating.LogEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into tb_bespokeres_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resID != null">
+                resID,
+            </if>
+            <if test="operaction != null">
+                operaction,
+            </if>
+            <if test="HospitalType != null">
+                HospitalType,
+            </if>
+            <if test="patientNum != null">
+                OutpatientBespokeNum,InPatientBespokeNum,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resID != null">
+                #{resID},
+            </if>
+            <if test="operaction != null">
+                #{operaction},
+            </if>
+            <if test="HospitalType != null">
+                #{HospitalType},
+            </if>
+            <if test='patientNum != null and HospitalType == "N"'>
+                 #{patientNum}, '0',
+            </if>
+            <if test='patientNum != null and HospitalType == "Y"'>
+                '0',#{patientNum},
+            </if>
+            <if test="date != null">
+                #{date},
+            </if>
+        </trim>
+    </insert>
+
+    <!--获取号源ID 停用-->
+    <!--<select id="getBespokeresID" resultType="java.lang.Integer">
+        select ID
+        from tb_bespokeres where 1=1 and ResType = 0
+        <if test="modality != null">
+            and modality = #{modality}
+        </if>
+        <if test="groupType != null">
+            and groupType = #{groupType}
+        </if>
+        <if test="groupName != null">
+            and groupName = #{groupName}
+        </if>
+        <if test="bespokeDate != null">
+            and bespokeDate = #{bespokeDate}
+        </if>
+        <if test="startTime!=null and startTime!='' ">
+            and <![CDATA[ StartTime <= #{startTime} ]]>
+        </if>
+        <if test="endTime!=null and endTime !='' ">
+            and <![CDATA[ EndTime >= #{endTime} ]]>
+        </if>
+        <if test="hospitalName != null">
+            and hospitalName = #{hospitalName}
+        </if>
+    </select>-->
+
+    <select id="selectBespokeresByID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespokeres where ID = #{resID}
+    </select>
+
+</mapper>

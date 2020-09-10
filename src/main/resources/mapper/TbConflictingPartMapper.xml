@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbConflictingPartMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbConflictingPart">
+        <id column="ID" property="id" />
+        <result column="Modality" property="Modality" />
+        <result column="PartID" property="PartID" />
+        <result column="ConflictingModality" property="ConflictingModality" />
+        <result column="ConflictingPartID" property="ConflictingPartID" />
+        <result column="ConflictingType" property="ConflictingType" />
+        <result column="ConflictingHour" property="ConflictingHour" />
+        <result column="HospitalName" property="HospitalName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, Modality, PartID,ConflictingModality, ConflictingPartID,ConflictingType,ConflictingHour,HospitalName
+    </sql>
+
+    <!--列表-->
+    <select id="selectFinAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_conflicting_part
+    </select>
+
+
+    <!--查询重复-->
+    <select id="selectRepeat" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_conflicting_part
+        where 1=1
+        <if test="Modality != null">
+            and Modality = #{Modality}
+        </if>
+        <if test="PartID != null">
+            and PartID = #{PartID}
+        </if>
+        <if test="ConflictingModality != null">
+            and ConflictingModality = #{ConflictingModality}
+        </if>
+        <if test="ConflictingPartID != null">
+            and ConflictingPartID = #{ConflictingPartID}
+        </if>
+        <if test="ConflictingType != null">
+            and ConflictingType = #{ConflictingType}
+        </if>
+        <if test="ConflictingHour != null">
+            and ConflictingHour = #{ConflictingHour}
+        </if>
+        <if test="HospitalName != null">
+            and HospitalName = #{HospitalName}
+        </if>
+    </select>
+
+    <!--添加-->
+    <insert id="insertTbConflictingPart" parameterType="com.annet.entity.TbConflictingPart"
+        useGeneratedKeys="true" keyProperty="id">
+        insert into tb_conflicting_part
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                Modality,
+            </if>
+            <if test="PartID != null">
+                PartID,
+            </if>
+            <if test="ConflictingModality != null">
+                ConflictingModality,
+            </if>
+            <if test="ConflictingPartID != null">
+                ConflictingPartID,
+            </if>
+            <if test="ConflictingType != null">
+                ConflictingType,
+            </if>
+            <if test="ConflictingHour != null">
+                ConflictingHour,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                #{Modality},
+            </if>
+            <if test="PartID != null">
+                #{PartID},
+            </if>
+            <if test="ConflictingModality != null">
+                #{ConflictingModality},
+            </if>
+            <if test="ConflictingPartID != null">
+                #{ConflictingPartID},
+            </if>
+            <if test="ConflictingType != null">
+                #{ConflictingType},
+            </if>
+            <if test="ConflictingHour != null">
+                #{ConflictingHour},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改-->
+    <update id="updateTbConflictingPart" parameterType="com.annet.entity.TbConflictingPart">
+        update tb_conflicting_part set
+        <trim suffixOverrides=",">
+            <if test="Modality != null">
+                Modality = #{Modality},
+            </if>
+            <if test="PartID != null">
+                PartID = #{PartID},
+            </if>
+            <if test="ConflictingModality != null">
+                ConflictingModality = #{ConflictingModality},
+            </if>
+            <if test="ConflictingPartID != null">
+                ConflictingPartID = #{ConflictingPartID},
+            </if>
+            <if test="ConflictingType != null">
+                ConflictingType = #{ConflictingType},
+            </if>
+            <if test="ConflictingHour != null">
+                ConflictingHour = #{ConflictingHour},
+            </if>
+            <if test="HospitalName != null">
+                HospitalName = #{HospitalName},
+            </if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteTbConflictingPart">
+      delete from tb_conflicting_part where ID = #{ID}
+    </delete>
+
+
+
+    <resultMap id="BaseResultAllDto" type="com.annet.entity.Dto.TbConflictingPartDto">
+        <id column="cpID" property="cpID" />
+        <result column="cpModality" property="cpModality" />
+        <result column="cpPartID" property="cpPartID" />
+        <result column="mpStudyPart" property="mpStudyPart" />
+        <result column="cpCPaerID" property="cpCPaerID" />
+        <result column="mpsStudyPart" property="mpsStudyPart" />
+        <result column="mpStudyMethod" property="mpStudyMethod" />
+        <result column="mpsStudyMethod" property="mpsStudyMethod" />
+    </resultMap>
+
+    <!--互斥列表-->
+    <select id="selectFinAllDto" resultMap="BaseResultAllDto">
+        select cp.ID as cpID ,cp.Modality as cpModality,cp.PartID as cpPartID,
+        mp.StudyPart as mpStudyPart,cp.ConflictingPartID as cpCPaerID,mps.StudyPart as mpsStudyPart
+        from tb_conflicting_part cp
+        left join tb_method_part mp on cp.PartID = mp.ID
+        left join tb_method_part mps on cp.ConflictingPartID = mps.ID
+    </select>
+
+    <!--互斥列表（登录人员权限）-->
+    <select id="selectFindAllDto" resultMap="BaseResultAllDto">
+        select distinct cp.ID as cpID ,
+        cp.Modality as cpModality,
+        cp.ConflictingModality as cpCModality,
+        cp.PartID as cpPartID,
+        mp.StudyPart as mpStudyPart,
+        mp.StudyMethod as mpStudyMethod,
+        cp.ConflictingPartID as cpCPaerID,
+        mps.StudyPart as mpsStudyPart,
+        mps.StudyMethod as mpsStudyMethod,
+        cp.ConflictingType as conflictingType,
+        cp.ConflictingHour as conflictingHour
+        from dbo.tb_conflicting_part cp
+        left join dbo.tb_method_part mp on cp.PartID = mp.ID
+        left join tb_method_part mps on cp.ConflictingPartID = mps.ID
+        inner join tb_studyroom ts on cp.Modality=ts.Modality
+        where 1=1
+        <if test="deptName != null">
+            and ts.DeptName = #{deptName}
+        </if>
+        <if test="hospitalName != null">
+            and ts.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--删除检查方法时，删除互斥的查询-->
+    <select id="selectSCFinAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_conflicting_part where PartID = #{PartID} OR ConflictingPartID = #{PartID}
+    </select>
+
+
+    <select id="isConflicting" resultMap="BaseResultMap">
+        select * from tb_conflicting_part where Modality=#{modality}
+        and ((PartID=#{partId} and ConflictingPartID=#{conflictingPartId} ) or (PartID=#{partId2} and ConflictingPartID=#{conflictingPartId2}))
+        and HospitalName=#{hospitalName};
+    </select>
+
+</mapper>

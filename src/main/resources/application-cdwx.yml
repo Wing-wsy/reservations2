@@ -1,0 +1,58 @@
+# 正式环境
+server:
+  #医院服务器端口
+  #微信端
+  port: 8086
+  #PC端
+  #port: 8089
+  servlet:
+    session:
+      timeout: PT10H
+
+# mybaits 模块配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  typeAliasesPackage: com.annet.entity
+
+#web service
+webservice:
+  #现场医院的webservice接口地址
+  Url: http://10.180.8.243:8091/BespokeWebService.asmx?wsdl
+#数据库连接
+spring:
+  datasource:
+    #医院现场测试数据库
+    url: jdbc:sqlserver://10.180.8.243:1433;DatabaseName=bespoke
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: Annet_pacs
+    initial-size: 1
+    min-idle: 1
+    max-active: 20
+    test-on-borrow: true
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-While-Idle: true
+    test-on-return: false
+    pool-prepared-statements: false
+    max-pool-prepared-statement-per-connection-size: 20
+    filters: stat,wall,log4j,config
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  jackson:
+    time-zoom: GMT+8
+
+  #logback输出日志配置
+  logging:
+    config: classpath:logback-spring.xml
+
+#是否是手机0是电脑，1是微信
+family:
+  flage: 1

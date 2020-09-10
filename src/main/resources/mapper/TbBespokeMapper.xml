@@ -1,0 +1,1171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbBespokeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbBespoke">
+        <id column="ID" property="id" />
+        <result column="BespokeNo" property="BespokeNo" />
+        <result column="RequestNo" property="RequestNo" />
+        <result column="HospitalizeType" property="HospitalizeType" />
+        <result column="HospitalizeNo" property="HospitalizeNo" />
+        <result column="HospitalizeTimes" property="HospitalizeTimes" />
+        <result column="InsuranceID" property="InsuranceID" />
+        <result column="AdmSerialNum" property="AdmSerialNum" />
+        <result column="DiagnosticCardNO" property="DiagnosticCardNO" />
+        <result column="HISPatientID" property="HISPatientID" />
+        <result column="Name" property="Name" />
+        <result column="Sex" property="Sex" />
+        <result column="Birthday" property="Birthday" />
+        <result column="Age" property="Age" />
+        <result column="Address" property="Address" />
+        <result column="Phone" property="Phone" />
+        <result column="ChiefComplaint" property="ChiefComplaint" />
+        <result column="OperationInfo" property="OperationInfo" />
+        <result column="ClinicReport" property="ClinicReport" />
+        <result column="OtherInfo" property="OtherInfo" />
+        <result column="RequestDeptCode" property="RequestDeptCode" />
+        <result column="RequestDept" property="RequestDept" />
+        <result column="Room" property="Room" />
+        <result column="Bed" property="Bed" />
+        <result column="RequestDoctorCode" property="RequestDoctorCode" />
+        <result column="RequestDoctor" property="RequestDoctor" />
+        <result column="RequestDate" property="RequestDate" />
+        <result column="Modality" property="Modality" />
+        <result column="TotalFee" property="TotalFee" />
+
+        <result column="ExecDeptCode" property="ExecDeptCode" />
+        <result column="ExecDept" property="ExecDept" />
+        <result column="StudyMethod" property="StudyMethod" />
+        <result column="StudyRoom" property="StudyRoom" />
+        <result column="Device" property="Device" />
+        <result column="StudyPartCode" property="StudyPartCode" />
+        <result column="StudyPart" property="StudyPart" />
+        <result column="SpecialInspection" property="SpecialInspection" />
+        <result column="BespokeType" property="BespokeType" />
+        <result column="BespokeDate" property="BespokeDate" />
+        <result column="BespokeOpreatorCode" property="BespokeOpreatorCode" />
+        <result column="BespokeOpreator" property="BespokeOpreator" />
+        <result column="FeeStatus" property="FeeStatus" />
+        <result column="BespokeStatus" property="BespokeStatus" />
+        <result column="StudyStatus" property="StudyStatus" />
+        <result column="ArriveDate" property="ArriveDate" />
+        <result column="QueueNo" property="QueueNo" />
+        <result column="RisExamNo" property="RisExamNo" />
+        <result column="RisAccessionNumber" property="RisAccessionNumber" />
+        <result column="GroupType" property="GroupType" />
+        <result column="BespokeStudyDate" property="BespokeStudyDate" />
+        <result column="StartTime" property="StartTime" />
+        <result column="EndTime" property="EndTime" />
+        <result column="TimeCoefficient" property="TimeCoefficient" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="Warning" property="Warning" />
+        <result column="HISStudyProject" property="HISStudyProject" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, BespokeNo, RequestNo,HospitalizeType, HospitalizeNo, HospitalizeTimes, InsuranceID, AdmSerialNum, DiagnosticCardNO,
+        HISPatientID, Name, Sex, Birthday, Age, Address, Phone, ChiefComplaint, OperationInfo, ClinicReport, OtherInfo, RequestDeptCode,
+        RequestDept, Room, Bed, RequestDoctorCode, RequestDoctor, RequestDate, Modality, TotalFee,ExecDeptCode, ExecDept, StudyMethod,
+        StudyRoom, Device, StudyPartCode, StudyPart,SpecialInspection, BespokeType, BespokeDate, BespokeOpreatorCode, BespokeOpreator,
+        FeeStatus, BespokeStatus, StudyStatus,ArriveDate, QueueNo,RisExamNo,RisAccessionNumber, GroupType, BespokeStudyDate,
+        StartTime, EndTime, TimeCoefficient,HospitalName,Warning,PartID,ResID
+    </sql>
+
+    <sql id="Base_Column_List_1">
+        a.ID, a.BespokeNo, a.RequestNo,a.HospitalizeType, a.HospitalizeNo, a.HospitalizeTimes, a.InsuranceID, a.AdmSerialNum, a.DiagnosticCardNO,
+        a.HISPatientID, a.Name, a.Sex, a.Birthday, a.Age, a.Address, a.Phone, a.ChiefComplaint, a.OperationInfo, a.ClinicReport, a.OtherInfo, a.RequestDeptCode,
+        a.RequestDept, a.Room, a.Bed, a.RequestDoctorCode, a.RequestDoctor, a.RequestDate, a.Modality, a.TotalFee,a.ExecDeptCode, a.ExecDept, a.StudyMethod,
+        a.StudyRoom, a.Device, a.StudyPartCode, a.StudyPart,a.SpecialInspection, a.BespokeType, a.BespokeDate, a.BespokeOpreatorCode, a.BespokeOpreator,
+        FeeStatus, BespokeStatus, StudyStatus,ArriveDate, QueueNo,RisExamNo,RisAccessionNumber, a.GroupType, BespokeStudyDate,
+        a.StartTime, a.EndTime, TimeCoefficient,a.HospitalName,Warning,PartID,ResID
+    </sql>
+
+
+    <!--通过ID查询-->
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespoke where ID = #{id}
+    </select>
+
+    <!-- 查询预约列表 旧 -->
+    <!--<select id="selectTbBespoke" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />,
+        stuff((SELECT distinct ',' + HISStudyProject FROM tb_order_detail b WHERE b.bespokeid = a.id FOR xml path(''))
+        , 1 , 1 , '') as HISStudyProject
+        from tb_bespoke a
+        where 1 = 1
+        <if test=" hospitalizeNo!=null and hospitalizeNo!='' ">
+            and HospitalizeNo = #{hospitalizeNo}
+        </if>
+        <if test="bespokeStatus!=null and bespokeStatus!='' ">
+            and BespokeStatus = #{bespokeStatus}
+        </if>
+        <if test="feeStatus!=null and feeStatus!=''">
+            and FeeStatus = #{feeStatus}
+        </if>
+        <if test='studyStatus!=null '>
+            and StudyStatus = #{studyStatus}
+        </if>
+        <if test="requestDeptCode!=null and requestDeptCode!='' and requestDeptCode!='0' ">
+            and RequestDeptCode = #{requestDeptCode}
+        </if>
+        <if test="startDate!=null and startDate!='' ">
+            and <![CDATA[ RequestDate >= #{startDate} ]]>
+        </if>
+        <if test="endDate!=null and endDate !='' ">
+            and <![CDATA[ RequestDate <= #{endDate} ]]>
+        </if>
+        <if test="bespokeStartDate!=null and bespokeStartDate !='' ">
+            and <![CDATA[ BespokeStudyDate >= #{bespokeStartDate} ]]>
+        </if>
+        <if test="bespokeEndDate!=null and bespokeEndDate!='' ">
+            and <![CDATA[ BespokeStudyDate <= #{bespokeEndDate} ]]>
+        </if>
+        <if test="hospitalName!=null and hospitalName!='' ">
+            and HospitalName = #{hospitalName}
+        </if>
+        <if test="bespokeStudyDate!=null and bespokeStudyDate!='' ">
+            and <![CDATA[ BespokeStudyDate >= #{bespokeStudyDate} ]]>
+        </if>
+        <if test="bespokeNo!=null and bespokeNo!='' ">
+            and BespokeNo = #{bespokeNo}
+        </if>
+        <if test="modality!=null and modality!='' ">
+            and Modality = #{modality}
+        </if>
+        <if test="studyRoom!=null and studyRoom!='' ">
+            and StudyRoom = #{studyRoom}
+        </if>
+        <if test="startTime!=null and startTime!='' ">
+            and <![CDATA[ StartTime >= #{startTime} ]]>
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            and <![CDATA[ EndTime <= #{endTime} ]]>
+        </if>
+        <if test='idtype == "1" or idtype == "2"'>
+            and HospitalizeNo = #{id}
+        </if>
+        <if test='idtype == "4"'>
+            and DiagnosticCardNO = #{id}
+        </if>
+        <if test='idtype == "5"'>
+            and HISPatientID = #{id}
+        </if>
+    </select>-->
+
+    <!-- 查询预约列表  -->
+    <select id="selectTbBespoke" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_1" />,
+        stuff((SELECT distinct ',' + HISStudyProject FROM tb_order_detail b WHERE b.bespokeid = a.id FOR xml path(''))
+        , 1 , 1 , '') as HISStudyProject
+        from tb_bespoke a ,tb_bespokeres r
+        where 1 = 1 and a.ResID = r.ID
+        <if test=" hospitalizeNo!=null and hospitalizeNo!='' ">
+            and a.HospitalizeNo = #{hospitalizeNo}
+        </if>
+        <if test="bespokeStatus!=null and bespokeStatus!='' ">
+            and a.BespokeStatus = #{bespokeStatus}
+        </if>
+        <if test="feeStatus!=null and feeStatus!=''">
+            and a.FeeStatus = #{feeStatus}
+        </if>
+        <if test='studyStatus!=null '>
+            and a.StudyStatus = #{studyStatus}
+        </if>
+        <if test="requestDeptCode!=null and requestDeptCode!='' and requestDeptCode!='0' ">
+            and a.RequestDeptCode = #{requestDeptCode}
+        </if>
+        <if test='requestDeptCode1!=null and requestDeptCode1!="" and requestDeptCode1!="0" '>
+            and a.RequestDeptCode = #{requestDeptCode1}
+        </if>
+        <if test="startDate!=null and startDate!='' ">
+            and <![CDATA[ RequestDate >= #{startDate} ]]>
+        </if>
+        <if test="endDate!=null and endDate !='' ">
+            and <![CDATA[ RequestDate <= #{endDate} ]]>
+        </if>
+        <if test="bespokeStartDate!=null and bespokeStartDate !='' ">
+            and <![CDATA[ BespokeStudyDate >= #{bespokeStartDate} ]]>
+        </if>
+        <if test="bespokeEndDate!=null and bespokeEndDate!='' ">
+            and <![CDATA[ BespokeStudyDate <= #{bespokeEndDate} ]]>
+        </if>
+        <if test="hospitalName!=null and hospitalName!='' ">
+            and a.HospitalName = #{hospitalName}
+        </if>
+        <if test="bespokeStudyDate!=null and bespokeStudyDate!='' ">
+            and <![CDATA[ BespokeStudyDate >= #{bespokeStudyDate} ]]>
+        </if>
+        <if test="bespokeNo!=null and bespokeNo!='' ">
+            and a.BespokeNo = #{bespokeNo}
+        </if>
+        <if test="modality!=null and modality!='' ">
+            and a.Modality = #{modality}
+        </if>
+        <if test="studyRoom!=null and studyRoom!='' ">
+            and a.StudyRoom = #{studyRoom}
+        </if>
+        <if test="startTime!=null and startTime!='' ">
+            and <![CDATA[ a.StartTime >= #{startTime} ]]>
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            and <![CDATA[ a.EndTime <= #{endTime} ]]>
+        </if>
+        <if test='idtype == "1" or idtype == "2"'>
+            and HospitalizeNo = #{id}
+        </if>
+        <if test='idtype == "4"'>
+            and DiagnosticCardNO = #{id}
+        </if>
+        <if test='idtype == "5"'>
+            and HISPatientID = #{id}
+        </if>
+        <if test="resType!=null">
+            and r.ResType = #{resType}
+        </if>
+    </select>
+
+    <!-- 查询预约列表(根据登录权限查询) -->
+    <!--<select id="selectTbBespokeByDeptName" resultMap="BaseResultMap">
+        select distinct
+        a.ID, a.BespokeNo, a.RequestNo, a.HospitalizeType, a.HospitalizeNo,
+        a.HospitalizeTimes, a.InsuranceID, a.AdmSerialNum, a.DiagnosticCardNO,
+        a.HISPatientID, a.Name, a.Sex, a.Birthday, a.Age, a.Address, a.Phone, a.ChiefComplaint,
+        a.OperationInfo, a.ClinicReport, a.OtherInfo, a.RequestDeptCode,
+        a.RequestDept, a.Room, a.Bed, a.RequestDoctorCode, a.RequestDoctor, a.RequestDate,
+        a.Modality,a.TotalFee, a.ExecDeptCode, a.ExecDept, a.StudyMethod,
+        a.StudyRoom, a.Device, a.StudyPartCode, a.StudyPart,
+        a.SpecialInspection, a.BespokeType, a.BespokeDate, a.BespokeOpreatorCode, a.BespokeOpreator,
+        a.FeeStatus, a.BespokeStatus, a.StudyStatus,
+        a.ArriveDate, a.QueueNo,a.RisExamNo,a.RisAccessionNumber, a.GroupType, a.BespokeStudyDate,
+        a.StartTime, a.EndTime,
+        a.TimeCoefficient,a.HospitalName,a.Warning,PartID,
+        stuff((SELECT distinct ',' + HISStudyProject FROM tb_order_detail b WHERE b.bespokeid = a.id FOR xml path(''))
+        , 1 , 1 , '') as HISStudyProject
+        from tb_bespoke a
+        inner join tb_studyroom b on a.Modality = b.Modality
+        where 1 = 1
+        <if test=" hospitalizeNo!=null and hospitalizeNo!='' ">
+            and a.HospitalizeNo = #{hospitalizeNo}
+        </if>
+        <if test="bespokeStatus!=null and bespokeStatus!='' ">
+            and a.BespokeStatus = #{bespokeStatus}
+        </if>
+        <if test="feeStatus!=null and feeStatus!=''">
+            and a.FeeStatus = #{feeStatus}
+        </if>
+        <if test='studyStatus!=null '>
+            and StudyStatus = #{studyStatus}
+        </if>
+        <if test="requestDeptCode!=null and requestDeptCode!='' and requestDeptCode!='0' ">
+            and a.RequestDeptCode = #{requestDeptCode}
+        </if>
+        <if test="startDate!=null and startDate!='' ">
+            and <![CDATA[ a.RequestDate >= #{startDate} ]]>
+        </if>
+        <if test="endDate!=null and endDate !='' ">
+            and <![CDATA[ a.RequestDate <= #{endDate} ]]>
+        </if>
+        <if test="bespokeStartDate!=null and bespokeStartDate !='' ">
+            and <![CDATA[ a.BespokeStudyDate >= #{bespokeStartDate} ]]>
+        </if>
+        <if test="bespokeEndDate!=null and bespokeEndDate!='' ">
+            and <![CDATA[ a.BespokeStudyDate <= #{bespokeEndDate} ]]>
+        </if>
+        <if test="hospitalName!=null and hospitalName!='' ">
+            and a.HospitalName = #{hospitalName}
+        </if>
+        <if test="bespokeStudyDate!=null and bespokeStudyDate!='' ">
+            and <![CDATA[ a.BespokeStudyDate >= #{bespokeStudyDate} ]]>
+        </if>
+        <if test="deptName!=null and deptName!='' ">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="bespokeNo!=null and bespokeNo!='' ">
+            and a.BespokeNo = #{bespokeNo}
+        </if>
+        <if test="modality!=null and modality!='' ">
+            and a.Modality = #{modality}
+        </if>
+        <if test="studyRoom!=null and studyRoom!='' ">
+            and a.StudyRoom = #{studyRoom}
+        </if>
+        <if test="startTime!=null and startTime!='' ">
+            and <![CDATA[ a.StartTime >= #{startTime} ]]>
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            and <![CDATA[ a.EndTime <= #{startTime} ]]>
+        </if>
+        <if test='idtype == "1" or idtype == "2"'>
+            and HospitalizeNo = #{id}
+        </if>
+        <if test='idtype == "4"'>
+            and DiagnosticCardNO = #{id}
+        </if>
+        <if test='idtype == "5"'>
+            and HISPatientID = #{id}
+        </if>
+    </select>-->
+
+    <!-- 查询预约列表(根据登录权限查询) -->
+    <select id="selectTbBespokeByDeptName" resultMap="BaseResultMap">
+        select distinct
+        a.ID, a.BespokeNo, a.RequestNo, a.HospitalizeType, a.HospitalizeNo,
+        a.HospitalizeTimes, a.InsuranceID, a.AdmSerialNum, a.DiagnosticCardNO,
+        a.HISPatientID, a.Name, a.Sex, a.Birthday, a.Age, a.Address, a.Phone, a.ChiefComplaint,
+        a.OperationInfo, a.ClinicReport, a.OtherInfo, a.RequestDeptCode,
+        a.RequestDept, a.Room, a.Bed, a.RequestDoctorCode, a.RequestDoctor, a.RequestDate,
+        a.Modality,a.TotalFee, a.ExecDeptCode, a.ExecDept, a.StudyMethod,
+        a.StudyRoom, a.Device, a.StudyPartCode, a.StudyPart,
+        a.SpecialInspection, a.BespokeType, a.BespokeDate, a.BespokeOpreatorCode, a.BespokeOpreator,
+        a.FeeStatus, a.BespokeStatus, a.StudyStatus,
+        a.ArriveDate, a.QueueNo,a.RisExamNo,a.RisAccessionNumber, a.GroupType, a.BespokeStudyDate,
+        a.StartTime, a.EndTime,
+        a.TimeCoefficient,a.HospitalName,a.Warning,PartID,
+        stuff((SELECT distinct ',' + HISStudyProject FROM tb_order_detail b WHERE b.bespokeid = a.id FOR xml path(''))
+        , 1 , 1 , '') as HISStudyProject
+        from tb_bespoke a ,tb_studyroom b ,tb_bespokeres r
+        where 1 = 1 and a.Modality = b.Modality and a.ResID = r.ID
+        <if test=" hospitalizeNo!=null and hospitalizeNo!='' ">
+            and a.HospitalizeNo = #{hospitalizeNo}
+        </if>
+        <if test="bespokeStatus!=null and bespokeStatus!='' ">
+            and a.BespokeStatus = #{bespokeStatus}
+        </if>
+        <if test="feeStatus!=null and feeStatus!=''">
+            and a.FeeStatus = #{feeStatus}
+        </if>
+        <if test='studyStatus!=null '>
+            and StudyStatus = #{studyStatus}
+        </if>
+        <if test="requestDeptCode!=null and requestDeptCode!='' and requestDeptCode!='0' ">
+            and a.RequestDeptCode = #{requestDeptCode}
+        </if>
+        <if test='requestDeptCode1!=null and requestDeptCode1!="" and requestDeptCode1!="0" '>
+            and a.RequestDeptCode = #{requestDeptCode1}
+        </if>
+        <if test="startDate!=null and startDate!='' ">
+            and <![CDATA[ a.RequestDate >= #{startDate} ]]>
+        </if>
+        <if test="endDate!=null and endDate !='' ">
+            and <![CDATA[ a.RequestDate <= #{endDate} ]]>
+        </if>
+        <if test="bespokeStartDate!=null and bespokeStartDate !='' ">
+            and <![CDATA[ a.BespokeStudyDate >= #{bespokeStartDate} ]]>
+        </if>
+        <if test="bespokeEndDate!=null and bespokeEndDate!='' ">
+            and <![CDATA[ a.BespokeStudyDate <= #{bespokeEndDate} ]]>
+        </if>
+        <if test="hospitalName!=null and hospitalName!='' ">
+            and a.HospitalName = #{hospitalName}
+        </if>
+        <if test="bespokeStudyDate!=null and bespokeStudyDate!='' ">
+            and <![CDATA[ a.BespokeStudyDate >= #{bespokeStudyDate} ]]>
+        </if>
+        <if test="deptName!=null and deptName!='' ">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="bespokeNo!=null and bespokeNo!='' ">
+            and a.BespokeNo = #{bespokeNo}
+        </if>
+        <if test="modality!=null and modality!='' ">
+            and a.Modality = #{modality}
+        </if>
+        <if test="studyRoom!=null and studyRoom!='' ">
+            and a.StudyRoom = #{studyRoom}
+        </if>
+        <if test="startTime!=null and startTime!='' ">
+            and <![CDATA[ a.StartTime >= #{startTime} ]]>
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            and <![CDATA[ a.EndTime <= #{startTime} ]]>
+        </if>
+        <if test='idtype == "1" or idtype == "2"'>
+            and HospitalizeNo = #{id}
+        </if>
+        <if test='idtype == "4"'>
+            and DiagnosticCardNO = #{id}
+        </if>
+        <if test='idtype == "5"'>
+            and HISPatientID = #{id}
+        </if>
+        <if test="resType!=null">
+            and r.ResType = #{resType}
+        </if>
+    </select>
+
+    <!--根据申请单判断是否已预约(暂停使用)-->
+    <select id="selectCondition" resultMap="BaseResultMap">
+        select
+        a.ID, a.BespokeNo, a.RequestNo,a.HospitalizeType, a.HospitalizeNo, a.HospitalizeTimes,
+        a.InsuranceID, a.AdmSerialNum, a.DiagnosticCardNO,
+        a.HISPatientID, a.Name, a.Sex, a.Birthday, a.Age, a.Address, a.Phone, a.ChiefComplaint,
+        a.OperationInfo, a.ClinicReport, a.OtherInfo, a.RequestDeptCode,
+        a.RequestDept, a.Room, a.Bed, a.RequestDoctorCode, a.RequestDoctor, a.RequestDate,
+        a.Modality, a.TotalFee,a.ExecDeptCode, a.ExecDept, a.StudyMethod,
+        a.StudyRoom, a.Device, a.StudyPartCode, a.StudyPart,a.SpecialInspection, a.BespokeType,
+        a.BespokeDate, a.BespokeOpreatorCode, a.BespokeOpreator,
+        a.FeeStatus, a.BespokeStatus, a.StudyStatus,a.ArriveDate,
+        a.QueueNo,RisExamNo,a.RisAccessionNumber, a.GroupType, a.BespokeStudyDate,
+        a.StartTime, a.EndTime, a.TimeCoefficient,a.HospitalName,a.Warning
+        from tb_bespoke a
+        inner join tb_order_detail b on a.ID=b.BespokeID
+        where 1 = 1 and BespokeStatus=1
+        <if test=" RequestNo!=null and RequestNo!='' ">
+            and a.RequestNo = #{RequestNo}
+        </if>
+        <if test=" OrdRowID!=null and OrdRowID!='' ">
+            and b.OrdRowID = #{OrdRowID}
+        </if>
+    </select>
+
+    <!--根据申请单RequestNo和预约状态BespokeStatus以及tb_order_detail.OrdRowID判断是否已预约（在用）-->
+    <select id="selectTbBespokeByRequestNo" resultMap="BaseResultMap">
+        select
+        a.ID, a.BespokeNo, a.RequestNo,a.HospitalizeType, a.HospitalizeNo, a.HospitalizeTimes,
+        a.InsuranceID, a.AdmSerialNum, a.DiagnosticCardNO,
+        a.HISPatientID, a.Name, a.Sex, a.Birthday, a.Age, a.Address, a.Phone, a.ChiefComplaint,
+        a.OperationInfo, a.ClinicReport, a.OtherInfo, a.RequestDeptCode,
+        a.RequestDept, a.Room, a.Bed, a.RequestDoctorCode, a.RequestDoctor, a.RequestDate,
+        a.Modality, a.TotalFee,a.ExecDeptCode, a.ExecDept, a.StudyMethod,
+        a.StudyRoom, a.Device, a.StudyPartCode, a.StudyPart,a.SpecialInspection, a.BespokeType,
+        a.BespokeDate, a.BespokeOpreatorCode, a.BespokeOpreator,
+        a.FeeStatus, a.BespokeStatus, a.StudyStatus,a.ArriveDate,
+        a.QueueNo,RisExamNo,a.RisAccessionNumber, a.GroupType, a.BespokeStudyDate,
+        a.StartTime, a.EndTime, a.TimeCoefficient,a.HospitalName,a.Warning
+        from tb_bespoke a
+        inner join tb_order_detail b on a.ID=b.BespokeID
+        where 1 = 1 and BespokeStatus=1
+        <if test=" RequestNo!=null and RequestNo!='' ">
+            and b.RequestNo = #{RequestNo}
+        </if>
+        <if test=" OrdRowID!=null and OrdRowID!='' ">
+            and b.OrdRowID = #{OrdRowID}
+        </if>
+        <if test=" StudyPartCode!=null and StudyPartCode!='' ">
+            and b.HISStudyPartCode = #{StudyPartCode}
+        </if>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="insertTbBespoke" parameterType="com.annet.entity.TbBespoke" keyProperty="id"
+            useGeneratedKeys="true">
+        SET NOCOUNT ON;insert into tb_bespoke
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="BespokeNo != null">
+                BespokeNo,
+            </if>
+            <if test="RequestNo != null">
+                RequestNo,
+            </if>
+            <if test="HospitalizeType != null">
+                HospitalizeType,
+            </if>
+            <if test="HospitalizeNo != null">
+                HospitalizeNo,
+            </if>
+            <if test="HospitalizeTimes != null">
+                HospitalizeTimes,
+            </if>
+            <if test="InsuranceID != null">
+                InsuranceID,
+            </if>
+            <if test="AdmSerialNum != null">
+                AdmSerialNum,
+            </if>
+            <if test="DiagnosticCardNO != null">
+                DiagnosticCardNO,
+            </if>
+            <if test="HISPatientID != null">
+                HISPatientID,
+            </if>
+            <if test="Name != null">
+                Name,
+            </if>
+            <if test="Sex != null">
+                Sex,
+            </if>
+            <if test="Birthday != null">
+                Birthday,
+            </if>
+            <if test="Age != null">
+                Age,
+            </if>
+            <if test="Address != null">
+                Address,
+            </if>
+            <if test="Phone != null">
+                Phone,
+            </if>
+            <if test="ChiefComplaint != null">
+                ChiefComplaint,
+            </if>
+            <if test="OperationInfo != null">
+                OperationInfo,
+            </if>
+            <if test="ClinicReport != null">
+                ClinicReport,
+            </if>
+            <if test="OtherInfo != null">
+                OtherInfo,
+            </if>
+            <if test="RequestDeptCode != null">
+                RequestDeptCode,
+            </if>
+            <if test="RequestDept != null">
+                RequestDept,
+            </if>
+            <if test="Room != null">
+                Room,
+            </if>
+            <if test="Bed != null">
+                Bed,
+            </if>
+            <if test="RequestDoctorCode != null">
+                RequestDoctorCode,
+            </if>
+            <if test="RequestDoctor != null">
+                RequestDoctor,
+            </if>
+            <if test="RequestDate != null">
+                RequestDate,
+            </if>
+            <if test="Modality != null">
+                Modality,
+            </if>
+            <if test="TotalFee != null">
+                TotalFee,
+            </if>
+            <if test="ExecDeptCode != null">
+                ExecDeptCode,
+            </if>
+            <if test="ExecDept != null">
+                ExecDept,
+            </if>
+            <if test="StudyMethod != null">
+                StudyMethod,
+            </if>
+            <if test="StudyRoom != null">
+                StudyRoom,
+            </if>
+            <if test="Device != null">
+                Device,
+            </if>
+            <if test="StudyPartCode != null">
+                StudyPartCode,
+            </if>
+            <if test="StudyPart != null">
+                StudyPart,
+            </if>
+            <if test="SpecialInspection != null">
+                SpecialInspection,
+            </if>
+            <if test="BespokeType != null">
+                BespokeType,
+            </if>
+            <if test="BespokeDate != null">
+                BespokeDate,
+            </if>
+            <if test="BespokeOpreatorCode != null">
+                BespokeOpreatorCode,
+            </if>
+            <if test="BespokeOpreator != null">
+                BespokeOpreator,
+            </if>
+            <if test="FeeStatus != null">
+                FeeStatus,
+            </if>
+            <if test="BespokeStatus != null">
+                BespokeStatus,
+            </if>
+            <if test="StudyStatus != null">
+                StudyStatus,
+            </if>
+            <if test="ArriveDate != null">
+                ArriveDate,
+            </if>
+            <if test="QueueNo != null">
+                QueueNo,
+            </if>
+            <if test="RisExamNo != null">
+                RisExamNo,
+            </if>
+            <if test="RisAccessionNumber != null">
+                RisAccessionNumber,
+            </if>
+            <if test="GroupType != null">
+                GroupType,
+            </if>
+            <if test="BespokeStudyDate != null">
+                BespokeStudyDate,
+            </if>
+            <if test="StartTime != null">
+                StartTime,
+            </if>
+            <if test="EndTime != null">
+                EndTime,
+            </if>
+            <if test="TimeCoefficient != null">
+                TimeCoefficient,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+            <if test="Warning != null">
+                Warning,
+            </if>
+            <if test="PartID != null">
+                PartID,
+            </if>
+            <if test="ResID != null">
+                ResID,
+            </if>
+            <if test="zhuanyun != null">
+                zhuanyun,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="BespokeNo != null">
+                #{BespokeNo},
+            </if>
+            <if test="RequestNo != null">
+                #{RequestNo},
+            </if>
+            <if test="HospitalizeType != null">
+                #{HospitalizeType},
+            </if>
+            <if test="HospitalizeNo != null">
+                #{HospitalizeNo},
+            </if>
+            <if test="HospitalizeTimes != null">
+                #{HospitalizeTimes},
+            </if>
+            <if test="InsuranceID != null">
+                #{InsuranceID},
+            </if>
+            <if test="AdmSerialNum != null">
+                #{AdmSerialNum},
+            </if>
+            <if test="DiagnosticCardNO != null">
+                #{DiagnosticCardNO},
+            </if>
+            <if test="HISPatientID != null">
+                #{HISPatientID},
+            </if>
+            <if test="Name != null">
+                #{Name},
+            </if>
+            <if test="Sex != null">
+                #{Sex},
+            </if>
+            <if test="Birthday != null">
+                #{Birthday},
+            </if>
+            <if test="Age != null">
+                #{Age},
+            </if>
+            <if test="Address != null">
+                #{Address},
+            </if>
+            <if test="Phone != null">
+                #{Phone},
+            </if>
+            <if test="ChiefComplaint != null">
+                #{ChiefComplaint},
+            </if>
+            <if test="OperationInfo != null">
+                #{OperationInfo},
+            </if>
+            <if test="ClinicReport != null">
+                #{ClinicReport},
+            </if>
+            <if test="OtherInfo != null">
+                #{OtherInfo},
+            </if>
+            <if test="RequestDeptCode != null">
+                #{RequestDeptCode},
+            </if>
+            <if test="RequestDept != null">
+                #{RequestDept},
+            </if>
+            <if test="Room != null">
+                #{Room},
+            </if>
+            <if test="Bed != null">
+                #{Bed},
+            </if>
+            <if test="RequestDoctorCode != null">
+                #{RequestDoctorCode},
+            </if>
+            <if test="RequestDoctor != null">
+                #{RequestDoctor},
+            </if>
+            <if test="RequestDate != null">
+                #{RequestDate},
+            </if>
+            <if test="Modality != null">
+                #{Modality},
+            </if>
+            <if test="TotalFee != null">
+                #{TotalFee},
+            </if>
+            <if test="ExecDeptCode != null">
+                #{ExecDeptCode},
+            </if>
+            <if test="ExecDept != null">
+                #{ExecDept},
+            </if>
+            <if test="StudyMethod != null">
+                #{StudyMethod},
+            </if>
+            <if test="StudyRoom != null">
+                #{StudyRoom},
+            </if>
+            <if test="Device != null">
+                #{Device},
+            </if>
+            <if test="StudyPartCode != null">
+                #{StudyPartCode},
+            </if>
+            <if test="StudyPart != null">
+                #{StudyPart},
+            </if>
+            <if test="SpecialInspection != null">
+                #{SpecialInspection},
+            </if>
+            <if test="BespokeType != null">
+                #{BespokeType},
+            </if>
+            <if test="BespokeDate != null">
+                #{BespokeDate},
+            </if>
+            <if test="BespokeOpreatorCode != null">
+                #{BespokeOpreatorCode},
+            </if>
+            <if test="BespokeOpreator != null">
+                #{BespokeOpreator},
+            </if>
+            <if test="FeeStatus != null">
+                #{FeeStatus},
+            </if>
+            <if test="BespokeStatus != null">
+                #{BespokeStatus},
+            </if>
+            <if test="StudyStatus != null">
+                #{StudyStatus},
+            </if>
+            <if test="ArriveDate != null">
+                #{ArriveDate},
+            </if>
+            <if test="QueueNo != null">
+                #{QueueNo},
+            </if>
+            <if test="RisExamNo != null">
+                #{RisExamNo},
+            </if>
+            <if test="RisAccessionNumber != null">
+                #{RisAccessionNumber},
+            </if>
+            <if test="GroupType != null">
+                #{GroupType},
+            </if>
+            <if test="BespokeStudyDate != null">
+                #{BespokeStudyDate},
+            </if>
+            <if test="StartTime != null">
+                #{StartTime},
+            </if>
+            <if test="EndTime != null">
+                #{EndTime},
+            </if>
+            <if test="TimeCoefficient != null">
+                #{TimeCoefficient},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+            <if test="Warning != null">
+                #{Warning},
+            </if>
+            <if test="PartID != null">
+                #{PartID},
+            </if>
+            <if test="ResID != null">
+                #{ResID},
+            </if>
+            <if test="zhuanyun != null">
+                #{zhuanyun},
+            </if>
+        </trim>
+        ;SELECT SCOPE_IDENTITY() AS CURRID
+    </insert>
+
+    <insert id="insertOperateRecord" parameterType="com.annet.entity.operating.ConfigOperate" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into tb_operate_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="OperateType != null">
+                OperateType,
+            </if>
+            <if test="BespokeID != null">
+                BespokeID,
+            </if>
+            <if test="OperateDate != null">
+                OperateDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="OperateType != null">
+                #{OperateType},
+            </if>
+            <if test="BespokeID != null">
+                #{BespokeID},
+            </if>
+            <if test="OperateDate != null">
+                #{OperateDate},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 修改 -->
+    <update id="updateTbBespoke" parameterType="com.annet.entity.TbBespoke">
+        update tb_bespoke set
+        <trim suffixOverrides=",">
+            <if test="BespokeNo != null">
+                BespokeNo = #{BespokeNo},
+            </if>
+            <if test="RequestNo != null">
+                RequestNo = #{RequestNo},
+            </if>
+            <if test="OrdRowID != null">
+                OrdRowID = #{OrdRowID},
+            </if>
+            <if test="HospitalizeType != null">
+                HospitalizeType = #{HospitalizeType},
+            </if>
+            <if test="HospitalizeNo != null">
+                HospitalizeNo = #{HospitalizeNo},
+            </if>
+            <if test="HospitalizeTimes != null">
+                HospitalizeTimes = #{HospitalizeTimes},
+            </if>
+            <if test="InsuranceID != null">
+                InsuranceID = #{InsuranceID},
+            </if>
+            <if test="AdmSerialNum != null">
+                AdmSerialNum = #{AdmSerialNum},
+            </if>
+            <if test="DiagnosticCardNO != null">
+                DiagnosticCardNO = #{DiagnosticCardNO},
+            </if>
+            <if test="HISPatientID != null">
+                HISPatientID = #{HISPatientID},
+            </if>
+            <if test="Name != null">
+                Name = #{Name},
+            </if>
+            <if test="Sex != null">
+                Sex = #{Sex},
+            </if>
+            <if test="Birthday != null">
+                Birthday = #{Birthday},
+            </if>
+            <if test="Age != null">
+                Age = #{Age},
+            </if>
+            <if test="Address != null">
+                Address = #{Address},
+            </if>
+            <if test="Phone != null">
+                Phone = #{Phone},
+            </if>
+            <if test="ChiefComplaint != null">
+                ChiefComplaint = #{ChiefComplaint},
+            </if>
+            <if test="OperationInfo != null">
+                OperationInfo = #{OperationInfo},
+            </if>
+            <if test="ClinicReport != null">
+                ClinicReport = #{ClinicReport},
+            </if>
+            <if test="OtherInfo != null">
+                OtherInfo = #{OtherInfo},
+            </if>
+            <if test="RequestDeptCode != null">
+                RequestDeptCode = #{RequestDeptCode},
+            </if>
+            <if test="RequestDept != null">
+                RequestDept = #{RequestDept},
+            </if>
+            <if test="Room != null">
+                Room = #{Room},
+            </if>
+            <if test="Bed != null">
+                Bed = #{Bed},
+            </if>
+            <if test="RequestDoctorCode != null">
+                RequestDoctorCode = #{RequestDoctorCode},
+            </if>
+            <if test="RequestDoctor != null">
+                RequestDoctor = #{RequestDoctor},
+            </if>
+            <if test="RequestDate != null">
+                RequestDate = #{RequestDate},
+            </if>
+            <if test="Modality != null">
+                Modality = #{Modality},
+            </if>
+            <if test="TotalFee != null">
+                TotalFee = #{TotalFee},
+            </if>
+            <if test="ExecDeptCode != null">
+                ExecDeptCode = #{ExecDeptCode},
+            </if>
+            <if test="ExecDept != null">
+                ExecDept = #{ExecDept},
+            </if>
+            <if test="StudyMethod != null">
+                StudyMethod = #{StudyMethod},
+            </if>
+            <if test="StudyRoom != null">
+                StudyRoom = #{StudyRoom},
+            </if>
+            <if test="Device != null">
+                Device = #{Device},
+            </if>
+            <if test="StudyPartCode != null">
+                StudyPartCode = #{StudyPartCode},
+            </if>
+            <if test="StudyPart != null">
+                StudyPart = #{StudyPart},
+            </if>
+            <if test="SpecialInspection != null">
+                SpecialInspection = #{SpecialInspection},
+            </if>
+            <if test="BespokeType != null">
+                BespokeType = #{BespokeType},
+            </if>
+            <if test="BespokeDate != null">
+                BespokeDate = #{BespokeDate},
+            </if>
+            <if test="BespokeOpreatorCode != null">
+                BespokeOpreatorCode = #{BespokeOpreatorCode},
+            </if>
+            <if test="BespokeOpreator != null">
+                BespokeOpreator = #{BespokeOpreator},
+            </if>
+            <if test="FeeStatus != null">
+                FeeStatus = #{FeeStatus},
+            </if>
+            <if test="BespokeStatus != null">
+                BespokeStatus = #{BespokeStatus},
+            </if>
+            <if test="StudyStatus != null">
+                StudyStatus = #{StudyStatus},
+            </if>
+            <if test="ArriveDate != null">
+                ArriveDate = #{ArriveDate},
+            </if>
+            <if test="QueueNo != null">
+                QueueNo = #{QueueNo},
+            </if>
+            <if test="RisExamNo != null">
+                RisExamNo = #{RisExamNo},
+            </if>
+            <if test="RisAccessionNumber != null">
+                RisAccessionNumber = #{RisAccessionNumber},
+            </if>
+            <if test="GroupType != null">
+                GroupType = #{GroupType},
+            </if>
+            <if test="BespokeStudyDate != null">
+                BespokeStudyDate = #{BespokeStudyDate},
+            </if>
+            <if test="StartTime != null">
+                StartTime = #{StartTime},
+            </if>
+            <if test="EndTime != null">
+                EndTime = #{EndTime},
+            </if>
+            <if test="TimeCoefficient != null">
+                TimeCoefficient = #{TimeCoefficient},
+            </if>
+            <if test="HospitalName != null">
+                HospitalName = #{HospitalName},
+            </if>
+            <if test="Warning != null">
+                Warning = #{Warning},
+            </if>
+            <if test="ResID != null">
+                ResID = #{ResID},
+            </if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteTbBespoke">
+      delete from tb_bespoke where ID = #{ID}
+    </delete>
+
+    <!--取最大值-->
+    <select id="selectMaxID" resultType="java.lang.String">
+        select MAX(BespokeNo) from tb_bespoke where
+        <![CDATA[ BespokeDate > #{bespokeDate} ]]>
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+
+    <!--精准预约时间,筛选已经预约的 -->
+    <select id="find" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespoke
+        where 1 = 1 and BespokeStatus=1 and GroupType=2
+        <if test=" execDept!=null and execDept!='' ">
+            and ExecDept = #{execDept}
+        </if>
+        <if test=" modality!=null and modality!='' ">
+            and Modality = #{modality}
+        </if>
+        <if test=" studyRoom!=null and studyRoom!='' ">
+            and StudyRoom = #{studyRoom}
+        </if>
+        <if test=" hospitalName!=null and hospitalName!='' ">
+            and HospitalName = #{hospitalName}
+        </if>
+        <if test="startTime!=null and startTime!='' ">
+            and StartTime >= #{startTime}
+        </if>
+        <if test="endTime!=null and endTime !='' ">
+            and <![CDATA[ EndTime <= #{endTime} ]]>
+        </if>
+        <if test="bespokeStudyDate!=null and bespokeStudyDate!='' ">
+            and CONVERT(VARCHAR(10),BespokeStudyDate,120) = #{bespokeStudyDate}
+        </if>
+        <if test="groupType!=null and groupType!='' ">
+            and GroupType >= #{groupType}
+        </if>
+    </select>
+
+    <!--医技预约人工报到实体类-->
+    <resultMap type="com.annet.entity.domain.GetPacsSelfRegister" id="resultPacsSelfRegister">
+        <result column="ID" property="ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="RequestNo" property="RequestNo" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+        <result column="BespokeID" property="BespokeID" javaType="java.lang.Integer"
+                jdbcType="INTEGER" />
+        <result column="XMLData" property="XMLData" javaType="java.lang.String"
+                jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--医技预约人工报到存储过程查询出报到调用RIS提供的webservice接口入参-->
+    <select id="getPacsSelfRegister" parameterType="java.util.Map" statementType="CALLABLE"
+            resultMap="resultPacsSelfRegister">
+        {
+        CALL PROC_GetPacsSelfRegister
+        (
+
+        #{ExecModality,mode=IN,jdbcType=VARCHAR},#{BespokeNo,mode=IN,jdbcType=VARCHAR},
+        #{ID,mode=IN,jdbcType=INTEGER}
+        )}
+    </select>
+
+    <!--根据预约id查询预约呀-->
+    <select id="findById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_bespoke
+        where 1 = 1
+        <if test="ID != null">
+            and ID = #{ID}
+        </if>
+    </select>
+
+    <!--获取已取消预约次数-->
+    <select id="getBespokeTimes" resultType="Integer">
+        select COUNT(*) CancelRecord from tb_bespoke where ID in( select BespokeID from tb_operate_record
+        where OperateType = '1'
+        <if test="cancelDate != null">
+            and <![CDATA[ datediff(day,OperateDate,getdate()) <= #{cancelDate} ]]>
+        </if>
+        )
+        <if test='idtype == "1" or idtype == "2"'>
+            and HospitalizeNo = #{uid}
+        </if>
+        <if test='idtype == "4"'>
+            and DiagnosticCardNO = #{uid}
+        </if>
+        <if test='idtype == "5"'>
+            and HISPatientID = #{uid}
+        </if>
+        <if test="execDept != null">
+            and execDept = #{execDept}
+        </if>
+    </select>
+
+    <!--获取已变更预约次数-->
+    <select id="getChangeBespokeTimes" resultType="Integer">
+        select ISNULL(sum(ChangeRecord),0)num from (select BespokeID,COUNT(*) ChangeRecord from tb_operate_record where OperateType = '2' group by BespokeID)t
+        where (select COUNT(*) Record from tb_bespoke where ID = t.BespokeID
+        <if test='idtype == "1" or idtype == "2"'>
+            and HospitalizeNo = #{uid}
+        </if>
+        <if test='idtype == "4"'>
+            and DiagnosticCardNO = #{uid}
+        </if>
+        <if test='idtype == "5"'>
+            and HISPatientID = #{uid}
+        </if>
+        ) > 0
+    </select>
+
+    <!--获取tb_config表配置的最大可取消次数-->
+    <select id="getBespokeNum" resultType="java.lang.String">
+        select ConfigValue from tb_config where 1 = 1
+        <if test='configKey != null'>
+            and ConfigKey = #{configKey}
+        </if>
+    </select>
+
+    <!--判断是否已预约-->
+    <select id="getBespokeInfo" resultType="java.lang.Integer">
+        select count(*) from tb_bespoke a, tb_order_detail b where a.ID=b.BespokeID
+        and BespokeStatus=1
+        <if test="requestNo != null">
+            and b.RequestNo = #{requestNo}
+        </if>
+        <if test="ordRowID != null">
+            and b.OrdRowID = #{ordRowID}
+        </if>
+        <if test="HISStudyPartCode != null">
+            and b.HISStudyPartCode = #{HISStudyPartCode}
+        </if>
+        <if test="HISStudyProjectCode != null">
+            AND b.HISStudyProjectCode = #{HISStudyProjectCode}
+        </if>
+        <if test="modality != null">
+            AND a.Modality = #{modality}
+        </if>
+        <if test="hospitalName != null">
+            and a.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <select id="getBespokeStatusAndQueueNo" resultMap="BaseResultMap">
+        select
+        StudyStatus,QueueNo
+        from tb_bespoke
+        where 1 = 1
+        <if test=" bespokeId!=null and bespokeId!='' ">
+            and ID = #{bespokeId}
+        </if>
+    </select>
+</mapper>

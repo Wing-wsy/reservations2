@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbStudyroomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbStudyroom">
+        <id column="RoomID" property="RoomID" />
+        <result column="DeptName" property="DeptName" />
+        <result column="Modality" property="Modality" />
+        <result column="RoomName" property="RoomName" />
+        <result column="Device" property="Device" />
+        <result column="BespokeDays" property="BespokeDays" />
+        <result column="Status" property="Status" />
+        <result column="PreciseTime" property="PreciseTime" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="RoomCode" property="RoomCode" />
+        <result column="Address" property="Address" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        RoomID, DeptName, Modality, RoomName, Device, BespokeDays, Status,PreciseTime,HospitalName,RoomCode,Address
+    </sql>
+    
+    <!--检查房间列表-->
+    <select id="selectfinAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from tb_studyroom where 1=1
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--条件查重，当所有值一样时不允许添加-->
+    <select id="selectRepeat" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tb_studyroom where 1=1
+        <if test="DeptName != null" >
+            and DeptName = #{DeptName}
+        </if>
+        <if test="Modality != null" >
+            and Modality = #{Modality}
+        </if>
+        <if test="RoomName != null" >
+            and RoomName = #{RoomName}
+        </if>
+        <if test="Device != null" >
+            and Device = #{Device}
+        </if>
+        <if test="RoomID != null" >
+            and RoomID != #{RoomID}
+        </if>
+        <if test="PreciseTime != null" >
+            and PreciseTime != #{PreciseTime}
+        </if>
+        <if test="HospitalName != null" >
+            and HospitalName != #{HospitalName}
+        </if>
+
+    </select>
+
+    <!--根据院区科室来查询设备-->
+    <select id="findDeptAndModality" resultMap="BaseResultMap">
+        select distinct <include refid="Base_Column_List"/>  from tb_studyroom where 1=1
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}
+        </if>
+        <if test="deptName!=null">
+            and DeptName = #{deptName}
+        </if>
+    </select>
+    
+    
+    <!--添加检查房间-->
+    <insert id="insertTbStudyroom" parameterType="com.annet.entity.TbStudyroom"  useGeneratedKeys="true" keyProperty="RoomID">
+        insert into tb_studyroom
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="DeptName != null" >
+                DeptName,
+            </if>
+            <if test="Modality != null" >
+                Modality,
+            </if>
+            <if test="RoomName != null" >
+                RoomName,
+            </if>
+            <if test="Device != null" >
+                Device,
+            </if>
+            <if test="BespokeDays != null" >
+                BespokeDays,
+            </if>
+            <if test="Status != null" >
+                Status,
+            </if>
+            <if test="PreciseTime != null" >
+               PreciseTime,
+            </if>
+            <if test="HospitalName != null" >
+                HospitalName,
+            </if>
+            <if test="RoomCode != null" >
+                RoomCode,
+            </if>
+            <if test="Address != null" >
+                Address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="DeptName != null" >
+                #{DeptName},
+            </if>
+            <if test="Modality != null" >
+                #{Modality},
+            </if>
+            <if test="RoomName != null" >
+                #{RoomName},
+            </if>
+            <if test="Device != null" >
+                #{Device},
+            </if>
+            <if test="BespokeDays != null" >
+                #{BespokeDays},
+            </if>
+            <if test="Status != null" >
+                #{Status},
+            </if>
+            <if test="PreciseTime != null" >
+                #{PreciseTime},
+            </if>
+            <if test="HospitalName != null" >
+                #{HospitalName},
+            </if>
+            <if test="RoomCode != null" >
+                #{RoomCode},
+            </if>
+            <if test="Address != null" >
+                #{Address},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改检查房间-->
+    <update id="updateTbStudyroom" parameterType="com.annet.entity.TbStudyroom">
+        update tb_studyroom set
+        <trim suffixOverrides="," >
+            <if test="DeptName != null" >
+                DeptName = #{DeptName},
+            </if>
+            <if test="Modality != null" >
+                Modality = #{Modality},
+            </if>
+            <if test="RoomName != null" >
+                RoomName = #{RoomName},
+            </if>
+            <if test="Device != null" >
+                Device = #{Device},
+            </if>
+            <if test="BespokeDays != null" >
+                BespokeDays = #{BespokeDays},
+            </if>
+            <if test="Status != null" >
+                Status = #{Status},
+            </if>
+            <if test="PreciseTime != null" >
+                PreciseTime = #{PreciseTime},
+            </if>
+            <if test="HospitalName != null" >
+                HospitalName = #{HospitalName},
+            </if>
+            <if test="RoomCode != null" >
+                RoomCode = #{RoomCode},
+            </if>
+            <if test="Address != null" >
+                Address = #{Address},
+            </if>
+        </trim>
+        where RoomID = #{RoomID}
+    </update>
+
+    <!--根据设备类型去重-->
+    <select id="selectGroupByModality" resultMap="BaseResultMap">
+        select Modality from tb_studyroom where
+        RoomID in(select max(RoomID)   from tb_studyroom group by Modality )
+    </select>
+
+    <select id="selectGroupByModalityAndDeptName" resultMap="BaseResultMap">
+        select distinct Modality,DeptName from tb_studyroom where 1=1
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}</if>
+    </select>
+
+
+    <select id="selectWhetherPreciseTime" resultMap="BaseResultMap">
+        select distinct <include refid="Base_Column_List"/>  from tb_studyroom where 1=1 and PreciseTime=1
+        <if test="deptName!=null">
+            and DeptName = #{deptName}
+        </if>
+        <if test="modality!=null">
+            and Modality = #{modality}
+        </if>
+        <if test="studyRoom!=null">
+            and RoomName = #{studyRoom}
+        </if>
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <select id="selectRoomCodeAndAddress" resultMap="BaseResultMap">
+        select RoomCode , Address from tb_studyroom where RoomName = #{studyRoom}
+    </select>
+</mapper>

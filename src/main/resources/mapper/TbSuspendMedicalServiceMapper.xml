@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbSuspendMedicalServiceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbSuspendMedicalService">
+        <id column="ID" property="id" />
+        <result column="Modality" property="Modality" />
+        <result column="GroupType" property="GroupType" />
+        <result column="GroupName" property="GroupName" />
+        <result column="StartDate" property="StartDate" />
+        <result column="EndDate" property="EndDate" />
+        <result column="HospitalName" property="HospitalName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, Modality, GroupType, GroupName, StartDate, EndDate, HospitalName
+    </sql>
+
+    <select id="selectFinAll" parameterType="com.annet.entity.TbSuspendMedicalService"
+        resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_suspend_medical_service where 1=1
+        <if test="EndDate != null">
+            and EndDate >= #{EndDate}
+        </if>
+        <if test="HospitalName != null">
+            and HospitalName = #{HospitalName}
+        </if>
+    </select>
+
+    <!--    添加停诊号源到停诊号源表-->
+    <insert id="addTbSuspendMedicalService" parameterType="com.annet.entity.TbSuspendMedicalService"
+        useGeneratedKeys="true" keyProperty="id">
+        insert into tb_suspend_medical_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                Modality,
+            </if>
+            <if test="GroupType != null">
+                GroupType,
+            </if>
+            <if test="GroupName != null">
+                GroupName,
+            </if>
+            <if test="StartDate != null">
+                StartDate,
+            </if>
+            <if test="EndDate != null">
+                EndDate,
+            </if>
+            <if test="HospitalName != null">
+                HospitalName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Modality != null">
+                #{Modality},
+            </if>
+            <if test="GroupType != null">
+                #{GroupType},
+            </if>
+            <if test="GroupName != null">
+                #{GroupName},
+            </if>
+            <if test="StartDate != null">
+                #{StartDate},
+            </if>
+            <if test="EndDate != null">
+                #{EndDate},
+            </if>
+            <if test="HospitalName != null">
+                #{HospitalName},
+            </if>
+        </trim>
+    </insert>
+
+    <!--    判断号源是否已经停诊-->
+    <select id="selectCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_suspend_medical_service where 1=1
+        <if test="Modality != null">
+            and Modality = #{Modality}
+        </if>
+        <if test="GroupType != null">
+            and GroupType = #{GroupType}
+        </if>
+        <if test="GroupName != null">
+            and GroupName = #{GroupName}
+        </if>
+        <if test="StartDate != null">
+            and StartDate = #{StartDate}
+        </if>
+        <if test="EndDate != null">
+            and EndDate = #{EndDate}
+        </if>
+    </select>
+
+</mapper>

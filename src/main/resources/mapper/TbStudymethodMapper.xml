@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbStudymethodMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbStudymethod">
+        <id column="MethodID" property="MethodID" />
+        <result column="Modality" property="Modality" />
+        <result column="MethodName" property="MethodName" />
+        <result column="BespokeDays" property="BespokeDays" />
+        <result column="HospitalName" property="HospitalName" />
+        <result column="Status" property="Status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        MethodID, Modality, MethodName, BespokeDays,HospitalName,Status
+    </sql>
+
+    <!--检查方法列表-->
+    <select id="selectfinAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from tb_studymethod where 1=1
+        <if test="hospitalName!=null">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--检查方法列表(搜索条件)-->
+    <select id="selectfinAllNew" resultMap="BaseResultMap" parameterType="com.annet.vo.TbStudymethodVo">
+        select <include refid="Base_Column_List"/> from tb_studymethod where 1=1
+        <if test="modality !=null and modality !=''">
+            and Modality = #{modality}
+        </if>
+        <if test="methodName!=null and methodName!=''">
+            and MethodName = #{methodName}
+        </if>
+        <if test="bespokeDays!=null">
+            and BespokeDays = #{bespokeDays}
+        </if>
+        <if test="hospitalName!=null and hospitalName!=''">
+            and HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--检查方法列表重复-->
+    <select id="selectCondition" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from tb_studymethod where 1=1
+        <if test="Modality != null" >
+            and Modality = #{Modality}
+        </if>
+        <if test="MethodName != null" >
+            and MethodName = #{MethodName}
+        </if>
+        <if test="MethodID != null" >
+            and MethodID != #{MethodID}
+        </if>
+        <if test="HospitalName!=null">
+            and HospitalName = #{HospitalName}
+        </if>
+
+    </select>
+
+    <!--添加检查方法-->
+    <insert id="insertTbStudymethod" parameterType="com.annet.entity.TbStudymethod"  useGeneratedKeys="true" keyProperty="MethodID">
+        insert into tb_studymethod
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="Modality != null" >
+                Modality,
+            </if>
+            <if test="MethodName != null" >
+                MethodName,
+            </if>
+            <if test="BespokeDays != null" >
+                BespokeDays,
+            </if>
+            <if test="HospitalName != null" >
+                HospitalName,
+            </if>
+            <if test="Status != null" >
+                Status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="Modality != null" >
+                #{Modality},
+            </if>
+            <if test="MethodName != null" >
+                #{MethodName},
+            </if>
+            <if test="BespokeDays != null" >
+                #{BespokeDays},
+            </if>
+            <if test="HospitalName != null" >
+                #{HospitalName},
+            </if>
+            <if test="Status != null" >
+                #{Status},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改检查方法-->
+    <update id="updateTbStudymethod" parameterType="com.annet.entity.TbStudyroom">
+        update tb_studymethod set
+        <trim suffixOverrides="," >
+            <if test="Modality != null" >
+                Modality = #{Modality},
+            </if>
+            <if test="MethodName != null" >
+                MethodName = #{MethodName},
+            </if>
+            <if test="BespokeDays != null" >
+                BespokeDays = #{BespokeDays},
+            </if>
+            <if test="HospitalName != null" >
+                HospitalName = #{HospitalName},
+            </if>
+            <if test="Status != null">
+                Status = #{Status},
+            </if>
+        </trim>
+        where MethodID = #{MethodID}
+    </update>
+
+    <!--检查方法列表，登录人员科室-->
+    <select id="selectFindAll" resultMap="BaseResultMap">
+        select distinct  a.MethodID,a.Modality, a.MethodName, a.BespokeDays,a.HospitalName, a.Status
+        from tb_studymethod a
+        inner join tb_studyroom b on a.Modality=b.Modality
+        where 1=1
+        <if test="deptName!=null">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="hospitalName!=null">
+            and b.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--检查方法列表，登录人员科室-->
+    <select id="selectFindAllNew" resultMap="BaseResultMap" parameterType="com.annet.vo.TbStudymethodVo">
+        select distinct  a.MethodID,a.Modality, a.MethodName, a.BespokeDays,a.HospitalName, a.Status
+        from tb_studymethod a
+        inner join tb_studyroom b on a.Modality=b.Modality
+        where 1=1
+        <if test="deptName!=null and deptName!=''">
+            and b.DeptName = #{deptName}
+        </if>
+        <if test="modality !=null and modality !=''">
+            and a.Modality = #{modality}
+        </if>
+        <if test="methodName!=null and methodName!=''">
+            and a.MethodName = #{methodName}
+        </if>
+        <if test="bespokeDays!=null">
+            and a.BespokeDays = #{bespokeDays}
+        </if>
+        <if test="hospitalName!=null and hospitalName!=''">
+            and b.HospitalName = #{hospitalName}
+        </if>
+    </select>
+
+    <!--删除检查方法-->
+    <delete id="deleteStudymethod">
+      delete from tb_studymethod where MethodID = #{MethodID}
+    </delete>
+
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.annet.mapper.TbRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.annet.entity.TbRule">
+        <id column="RuleKey" property="RuleKey" />
+        <result column="RuleName" property="RuleName" />
+        <result column="Comment" property="Comment" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        RuleKey, RuleName, Comment
+    </sql>
+
+    <!--列表-->
+    <select id="selectfinAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_rule
+    </select>
+
+    <!--添加-->
+    <insert id="insertTbRule" parameterType="com.annet.entity.TbUser">
+        insert into tb_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="RuleKey != null">
+                RuleKey,
+            </if>
+            <if test="RuleName != null">
+                RuleName,
+            </if>
+            <if test="Comment != null">
+                Comment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="RuleKey != null">
+                #{RuleKey},
+            </if>
+            <if test="RuleName != null">
+                #{RuleName},
+            </if>
+            <if test="Comment != null">
+                #{Comment},
+            </if>
+        </trim>
+    </insert>
+
+    <!--修改-->
+    <update id="updateTbRule" parameterType="com.annet.entity.TbUser">
+        update tb_rule set
+        <trim suffixOverrides=",">
+            <if test="RuleName != null">
+                RuleName = #{RuleName},
+            </if>
+            <if test="Comment != null">
+                Comment = #{Comment},
+            </if>
+        </trim>
+        where RuleKey = #{RuleKey}
+    </update>
+
+    <!--删除-->
+    <delete id="delectTbRule">
+        delete from tb_rule where RuleKey = #{RuleKey}
+    </delete>
+
+</mapper>
